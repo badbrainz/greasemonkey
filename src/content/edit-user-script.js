@@ -16,6 +16,7 @@ const userScriptUuid = location.hash.substr(1);
 const editorDocs = [];
 const editorTabs = [];
 const editorUrls = [];
+const savedContent = [];
 const tabs = document.getElementById('tabs');
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -49,9 +50,11 @@ chrome.runtime.sendMessage({
   editorTabs.push(scriptTab);
   editorDocs.push(CodeMirror.Doc(userScript.content, 'javascript'));
   editorUrls.push(null);
+  savedContent.push(userScript.content);
 
   Object.keys(userScript.requiresContent).forEach(u => {
     addRequireTab(u, userScript.requiresContent[u]);
+    savedContent.push(userScript.requiresContent[u]);
   });
 
   editor.swapDoc(editorDocs[0]);
@@ -76,12 +79,15 @@ function onUserScriptChanged(message, sender, sendResponse) {
       editorDocs.splice(i, 1);
       editorTabs.splice(i, 1);
       editorUrls.splice(i, 1);
+      savedContent.splice(i, 1);
     }
   }
+
 
   parsedDetails.requireUrls.forEach(u => {
     if (editorUrls.indexOf(u) === -1) {
       addRequireTab(u, details.requiresContent[u]);
+      savedContent.push(details.requiresContent[u]);
     }
   });
 }
@@ -122,23 +128,25 @@ function onSave() {
     return;
   }
 
+  let selectedDoc = editor.getDoc();
+  let idx = editorDocs.indexOf(selectedDoc);
+  savedContent[idx] = selectedDoc.getValue();
+
   let requires = {};
-  for (let i = 1; i < editorDocs.length; i++) {
-    requires[ editorUrls[i] ] = editorDocs[i].getValue();
+  for (let i = 1; i < savedContent.length; i++) {
+    requires[ editorUrls[i] ] = savedContent[i];
   }
 
   chrome.runtime.sendMessage({
     'name': 'EditorSaved',
     'uuid': userScriptUuid,
-    'content': editorDocs[0].getValue(),
+    'content': savedContent[0],
     'requires': requires,
   });
 
   // TODO: Spinner, then only when completed:
-  for (let i = 0; i < editorDocs.length; i++) {
-    editorDocs[i].markClean();
-    editorTabs[i].classList.remove('dirty');
-  }
+  selectedDoc.markClean();
+  editorTabs[idx].classList.remove('dirty');
 }
 
 ///////////////////////////////////////////////////////////////////////////////
