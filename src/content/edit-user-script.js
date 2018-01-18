@@ -1,15 +1,34 @@
 // TODO: Search, replace.
 // TODO: Put name in title.
 
-var editor = CodeMirror(
-    document.getElementById('editor'),
-    // TODO: Make appropriate options user-configurable.
-    {
-      'tabSize': 2,
-      'lineNumbers': true,
-    });
+const editorOptions = (function() {
+  let isMac = CodeMirror.keyMap['default'] == CodeMirror.keyMap.macDefault;
+  let ctrl = isMac ? 'Cmd-' : 'Ctrl-';
 
-CodeMirror.commands.save = onSave;
+  let editorOptions = {
+    'tabSize': 2,
+    'lineNumbers': true,
+    'fontSize': 11,
+    'lint': true,
+    'gutters': [],
+    'extraKeys': {
+      [ctrl + "'"]: 'increaseFontSize',
+      [ctrl + ';']: 'decreaseFontSize'
+    }
+  };
+
+  if (localStorage.hasOwnProperty('editor')) {
+    Object.assign(editorOptions, JSON.parse(localStorage.editor));
+  }
+
+  if (editorOptions.lint) {
+    editorOptions.gutters.push('CodeMirror-lint-markers');
+  }
+
+  return editorOptions;
+})();
+
+var editor = CodeMirror(document.getElementById('editor'), editorOptions);
 
 const titlePattern = '%s - Greasemonkey User Script Editor';
 const userScriptUuid = location.hash.substr(1);
@@ -151,6 +170,15 @@ editor.on('swapDoc', doc => {
   }
 });
 
-document.getElementById('save').addEventListener('click', () => {
-  editor.execCommand('save');
+editor.on('optionChange', (cm, option) => {
+  let optionalKeys = [
+    'fontSize', 'lineWrapping', 'indentWithTabs', 'indentUnit', 'lint'];
+
+  if (optionalKeys.includes(option)) {
+    let config = {};
+    optionalKeys.forEach(k => {
+      config[k] = editor.getOption(k);
+    });
+    localStorage.editor = JSON.stringify(config);
+  }
 });
