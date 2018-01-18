@@ -6,6 +6,10 @@ setMenuShortcut('#edit-indent-less', 'indentLess');
 setMenuShortcut('#edit-indent-auto', 'indentAuto');
 setMenuShortcut('#edit-delete-line', 'deleteLine');
 setMenuShortcut('#edit-jump-to-line', 'jumpToLine');
+setMenuShortcut('#edit-fold', 'fold');
+setMenuShortcut('#edit-unfold', 'unfold');
+setMenuShortcut('#edit-fold-all', 'foldAll');
+setMenuShortcut('#edit-unfold-all', 'unfoldAll');
 setMenuShortcut('#view-increase-font', 'increaseFontSize');
 setMenuShortcut('#view-decrease-font', 'decreaseFontSize');
 setMenuShortcut('#search-find', 'find');
@@ -27,6 +31,10 @@ $q('#edit-indent-less').onclick = menuCommand('indentLess');
 $q('#edit-indent-auto').onclick = menuCommand('indentAuto');
 $q('#edit-delete-line').onclick = menuCommand('deleteLine');
 $q('#edit-jump-to-line').onclick = menuCommand('jumpToLine', false);
+$q('#edit-fold').onclick = menuCommand('fold');
+$q('#edit-unfold').onclick = menuCommand('unfold');
+$q('#edit-fold-all').onclick = menuCommand('foldAll');
+$q('#edit-unfold-all').onclick = menuCommand('unfoldAll');
 
 // View
 $q('#view-increase-font').onclick = menuCommand('increaseFontSize');

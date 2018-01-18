@@ -13,7 +13,11 @@ const editorOptions = (function() {
     'gutters': [],
     'extraKeys': {
       [ctrl + "'"]: 'increaseFontSize',
-      [ctrl + ';']: 'decreaseFontSize'
+      [ctrl + ';']: 'decreaseFontSize',
+      [ctrl + '0']: 'fold',
+      [ctrl + '9']: 'unfold',
+      ['Shift-' + ctrl + '0']: 'foldAll',
+      ['Shift-' + ctrl + '9']: 'unfoldAll'
     }
   };
 

@@ -17,6 +17,10 @@
 
 <script src="/third-party/codemirror/addon/scroll/annotatescrollbar.js"></script>
 
+<link rel="stylesheet" href="/third-party/codemirror/addon/fold/foldgutter.css">
+<script src="/third-party/codemirror/addon/fold/foldcode.js"></script>
+<script src="/third-party/codemirror/addon/fold/brace-fold.js"></script>
+
 <script src="/third-party/codemirror/addon/search/searchcursor.js"></script>
 <script src="/third-party/codemirror/addon/search/search.js"></script>
 <script src="/third-party/codemirror/addon/search/match-highlighter.js"></script>
@@ -80,6 +84,23 @@
         <hr>
         <label for="edit" class="dropdown-item" id="edit-jump-to-line">
           <span>Jump to Line</span>
+          <span class="shortcut"></span>
+        </label>
+        <hr>
+        <label for="edit" class="dropdown-item" id="edit-fold">
+          <span>Fold</span>
+          <span class="shortcut"></span>
+        </label>
+        <label for="edit" class="dropdown-item" id="edit-unfold">
+          <span>Unold</span>
+          <span class="shortcut"></span>
+        </label>
+        <label for="edit" class="dropdown-item" id="edit-fold-all">
+          <span>Fold All</span>
+          <span class="shortcut"></span>
+        </label>
+        <label for="edit" class="dropdown-item" id="edit-unfold-all">
+          <span>Unold All</span>
           <span class="shortcut"></span>
         </label>
       </div>
