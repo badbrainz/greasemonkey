@@ -34,6 +34,10 @@
 <script src="../parse-user-script.js"></script>
 <script src="./cm-addons/lint-metadata.js"></script>
 <script src="./cm-addons/lint-metadata.run.js"></script>
+
+<link rel="stylesheet" href="/third-party/codemirror/addon/hint/show-hint.css">
+<script src="/third-party/codemirror/addon/hint/show-hint.js"></script>
+<script src="/third-party/codemirror/addon/hint/anyword-hint.js"></script>
 </head>
 
 <body>
@@ -191,6 +195,10 @@
           <input type="checkbox" id="options-linter">
           <label for="options">Lint Metablock</label>
         </div>
+        <div class="dropdown-item">
+          <input type="checkbox" id="options-autocomplete">
+          <label for="options">Autocomplete</label>
+        </div>
       </div>
       <label for="options" class="backdrop"></label>
     </form>
@@ -203,6 +211,10 @@
       <div class="dropdown">
         <label for="addons" class="dropdown-item" id="addons-find-bracket">
           <span>Find Matching Bracket</span>
+          <span class="shortcut"></span>
+        </label>
+        <label for="addons" class="dropdown-item" id="addons-show-hints">
+          <span>Show Hints</span>
           <span class="shortcut"></span>
         </label>
       </div>

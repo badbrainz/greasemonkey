@@ -12,6 +12,7 @@ const editorOptions = (function() {
     'lint': true,
     'gutters': [],
     'matchBrackets': false,
+    'autocomplete': false,
     'extraKeys': {
       [ctrl + "'"]: 'increaseFontSize',
       [ctrl + ';']: 'decreaseFontSize',
@@ -19,7 +20,8 @@ const editorOptions = (function() {
       [ctrl + '9']: 'unfold',
       ['Shift-' + ctrl + '0']: 'foldAll',
       ['Shift-' + ctrl + '9']: 'unfoldAll',
-      [ctrl + 'M']: 'goToBracket'
+      [ctrl + 'M']: 'goToBracket',
+      [ctrl + 'Space']: 'autocomplete'
     }
   };
 
@@ -175,7 +177,7 @@ editor.on('swapDoc', doc => {
 editor.on('optionChange', (cm, option) => {
   let optionalKeys = [
     'fontSize', 'lineWrapping', 'indentWithTabs', 'indentUnit', 'lint',
-    'matchBrackets'];
+    'matchBrackets', 'autocomplete'];
 
   if (optionalKeys.includes(option)) {
     let config = {};

@@ -18,6 +18,7 @@ setMenuShortcut('#search-find-prev', 'findPrev');
 setMenuShortcut('#search-replace', 'replace');
 setMenuShortcut('#search-replace-all', 'replaceAll');
 setMenuShortcut('#addons-find-bracket', 'goToBracket');
+setMenuShortcut('#addons-show-hints', 'autocomplete');
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -89,8 +90,14 @@ $q('#options-linter').addEventListener('change', event => {
   editor.setOption('lint', lint);
 }, false);
 
+$q('#options-autocomplete').addEventListener('change', event => {
+  editor.setOption('autocomplete', event.target.checked);
+}, false);
+
 //Addons
 $q('#addons-find-bracket').onclick = menuCommand('goToBracket');
+$q('#addons-show-hints').onclick = menuCommand('autocomplete');
+
 // Help
 $q('#help-home-page').onclick = event => {
   chrome.tabs.create({
@@ -115,6 +122,7 @@ $q('#help-wiki').onclick = event => {
   $q('#options-line-wrap').checked = editor.getOption('lineWrapping');
   $q('#options-highlight-brackets').checked = editor.getOption('matchBrackets');
   $q('#options-linter').checked = editor.getOption('lint');
+  $q('#options-autocomplete').checked = editor.getOption('autocomplete');
 })();
 
 ///////////////////////////////////////////////////////////////////////////////

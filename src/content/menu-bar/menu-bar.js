@@ -45,6 +45,8 @@ CodeMirror.defineOption('fontSize', 11, (cm, value) => {
   cm.refresh();
 });
 
+CodeMirror.defineOption('autocomplete', false);
+
 ///////////////////////////////////////////////////////////////////////////////
 
 // Define commands here.
@@ -67,5 +69,17 @@ CodeMirror.commands.goToBracket = cm => {
     if (next && CodeMirror.cmpPos(next.pos, range.head) != 0) return next.pos;
     let prev = cm.scanForBracket(range.head, -1);
     return prev && CodeMirror.Pos(prev.pos.line, prev.pos.ch + 1) || range.head;
+  });
+};
+
+CodeMirror.commands.autocomplete = cm => {
+  cm.showHint({
+    'hint': (cm, options) => {
+      if (cm.getOption('autocomplete') && CodeMirror.hint.anyword) {
+        return CodeMirror.hint.anyword(cm, options);
+      }
+    },
+    'container': cm.getWrapperElement().parentNode,
+    'completeSingle': false
   });
 };
