@@ -17,6 +17,7 @@ setMenuShortcut('#search-find-next', 'findNext');
 setMenuShortcut('#search-find-prev', 'findPrev');
 setMenuShortcut('#search-replace', 'replace');
 setMenuShortcut('#search-replace-all', 'replaceAll');
+setMenuShortcut('#addons-find-bracket', 'goToBracket');
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -67,6 +68,11 @@ $q('#options-line-wrap').addEventListener('change', event => {
   editor.setOption('lineWrapping', event.target.checked);
 }, false);
 
+
+$q('#options-highlight-brackets').addEventListener('change', event => {
+  editor.setOption('matchBrackets', event.target.checked);
+}, false);
+
 $q('#options-linter').addEventListener('change', event => {
   let lint = e.target.checked;
   let gutters = editor.getOption('gutters');
@@ -83,6 +89,8 @@ $q('#options-linter').addEventListener('change', event => {
   editor.setOption('lint', lint);
 }, false);
 
+//Addons
+$q('#addons-find-bracket').onclick = menuCommand('goToBracket');
 // Help
 $q('#help-home-page').onclick = event => {
   chrome.tabs.create({
@@ -105,6 +113,7 @@ $q('#help-wiki').onclick = event => {
   $q('#options-indent-two-spaces').checked = !tabs && unit == 2;
   $q('#options-indent-four-spaces').checked = !tabs && unit == 4;
   $q('#options-line-wrap').checked = editor.getOption('lineWrapping');
+  $q('#options-highlight-brackets').checked = editor.getOption('matchBrackets');
   $q('#options-linter').checked = editor.getOption('lint');
 })();
 

@@ -63,3 +63,8 @@ body, #editor {
 .CodeMirror {
   height: 100% !important;
 }
+div.CodeMirror span.CodeMirror-matchingbracket {
+  color: unset !important;
+  border-bottom: solid 1px black;
+  background-color: #0f0;
+}

@@ -17,6 +17,8 @@
 
 <script src="/third-party/codemirror/addon/scroll/annotatescrollbar.js"></script>
 
+<script src="/third-party/codemirror/addon/edit/matchbrackets.js"></script>
+
 <link rel="stylesheet" href="/third-party/codemirror/addon/fold/foldgutter.css">
 <script src="/third-party/codemirror/addon/fold/foldcode.js"></script>
 <script src="/third-party/codemirror/addon/fold/brace-fold.js"></script>
@@ -181,11 +183,30 @@
         </div>
         <hr>
         <div class="dropdown-item">
+          <input type="checkbox" id="options-highlight-brackets">
+          <label for="options">Highlight brackets</label>
+        </div>
+        <hr>
+        <div class="dropdown-item">
           <input type="checkbox" id="options-linter">
           <label for="options">Lint Metablock</label>
         </div>
       </div>
       <label for="options" class="backdrop"></label>
+    </form>
+  </li>
+
+  <li>
+    <form class="menu">
+      <input type="checkbox" id="addons">
+      <label for="addons" class="activator">Addons</label>
+      <div class="dropdown">
+        <label for="addons" class="dropdown-item" id="addons-find-bracket">
+          <span>Find Matching Bracket</span>
+          <span class="shortcut"></span>
+        </label>
+      </div>
+      <label for="addons" class="backdrop"></label>
     </form>
   </li>
 
