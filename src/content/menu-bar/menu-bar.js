@@ -41,7 +41,7 @@ function closeDropdown(event) {
 // Define options here.
 
 CodeMirror.defineOption('fontSize', 11, (cm, value) => {
-  cm.getWrapperElement().style.fontSize = value + 'px';
+  cm.getWrapperElement().parentNode.style.fontSize = value + 'px';
   cm.refresh();
 });
 
