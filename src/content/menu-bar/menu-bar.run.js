@@ -74,7 +74,7 @@ $q('#options-highlight-brackets').addEventListener('change', event => {
 }, false);
 
 $q('#options-linter').addEventListener('change', event => {
-  let lint = e.target.checked;
+  let lint = event.target.checked;
   let gutters = editor.getOption('gutters');
 
   let found = gutters.indexOf('CodeMirror-lint-markers');
