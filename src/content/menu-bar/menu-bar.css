@@ -5,7 +5,7 @@
   padding: 0;
   display: flex;
   z-index: 10;
-  -moz-user-select: none;
+  user-select: none;
   border-bottom: solid 1px darkgrey;
   flex: 0 0 auto;
 }
