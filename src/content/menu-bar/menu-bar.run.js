@@ -127,8 +127,8 @@ $q('#help-wiki').onclick = event => {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-// <input> elements that overlap labels will prevent dropdowns from closing.
-// Wait for their change event and close manually.
 for (let menu of $a('#menus .menu')) {
-  menu.addEventListener('change', closeDropdown, true);
+  menu.addEventListener('change', onMenuToggled, true);
 }
+
+document.addEventListener('keydown', onHotKey, true);

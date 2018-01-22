@@ -48,9 +48,9 @@
   z-index: 1;
 }
 #menus .menu .activator,
-#menus .menu .dropdown label {
+#menus .dropdown-item {
   padding: 4px 8px;
-  line-height: 20px;
+  line-height: 18px;
 }
 #menus .dropdown-item {
   display: flex;
@@ -70,6 +70,7 @@
   opacity: 0;
   width: 100%;
   height: 100%;
+  left: 0;
 }
 #menus .dropdown-item input[type="radio"] ~ label::before,
 #menus .dropdown-item input[type="checkbox"] ~ label::before {

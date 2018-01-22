@@ -1,7 +1,63 @@
-// TODO Add a 'Save All' menu.
-
 let $q = (selector, parent = document) => parent.querySelector(selector);
 let $a = (selector, parent = document) => parent.querySelectorAll(selector);
+
+// Map combo keys to menu checkboxes here.
+
+const hotKeys = {
+  'Alt-F': 'file',
+  'Alt-E': 'edit',
+  'Alt-V': 'view',
+  'Alt-S': 'search',
+  'Alt-O': 'options',
+  'Alt-A': 'addons',
+  'Alt-H': 'help',
+};
+
+const menuState = {
+  menu: null,
+  items: [],
+  index: -1,
+
+  handleEvent(event) {
+    let keyname = CodeMirror.keyNames[event.keyCode];
+    switch (keyname) {
+      case 'Up':
+        if (this.items[this.index] && this.items[this.index - 1]) {
+          this.items[--this.index].focus();
+        } else {
+          this.index = this.items.length - 1;
+          this.items[this.index].focus();
+        }
+        break;
+      case 'Down':
+        if (this.items[this.index] && this.items[this.index + 1]) {
+          this.items[++this.index].focus();
+        } else {
+          this.index = 0
+          this.items[this.index].focus();
+        }
+        break;
+      case 'Enter':
+        if (this.items[this.index]) {
+          event.preventDefault();
+          this.items[this.index].click();
+        } else {
+          this.index = 0
+          this.items[this.index].focus();
+        }
+        break;
+      case 'Esc':
+        this.menu.firstElementChild.click();
+        editor.focus();
+        break;
+      case 'Tab':
+        event.preventDefault();
+        break;
+      default:
+        break;
+    }
+  }
+};
 
 function lookupCommandKey(command, keyMap) {
   let key = Object.keys(keyMap).find(k => keyMap[k] == command);
@@ -30,9 +86,47 @@ function menuCommand(cmd, focus = true) {
   };
 }
 
-function closeDropdown(event) {
+function activateMenu(menu) {
+  if (menuState.menu) {
+    menuState.menu.removeEventListener('keydown', menuState, true);
+  }
+  menuState.menu = menu;
+  menuState.menu.addEventListener('keydown', menuState, true);
+  menuState.items = $a('.dropdown-item', menuState.menu);
+  menuState.index = -1;
+  $q('.dropdown', menuState.menu).focus();
+}
+
+function onMenuToggled(event) {
   if (!event.target.isSameNode(event.currentTarget.firstElementChild)) {
-    event.currentTarget.firstElementChild.checked = false;
+    event.currentTarget.firstElementChild.click();
+  } else if (event.target.checked) {
+    activateMenu(event.currentTarget);
+  }
+}
+
+function onHotKey(event) {
+  let combo = CodeMirror.keyName(event);
+  if (!hotKeys.hasOwnProperty(combo)) {
+    return;
+  }
+
+  event.preventDefault();
+  event.stopPropagation();
+
+  // BUG menubar won't receive focus if hotkey is pressed inside search dialog.
+  if (event.target.className.includes('CodeMirror-search-field')) {
+    return;
+  }
+
+  for (let menu of $a('#menus .menu')) {
+    let input = menu.firstElementChild;
+    if (input.checked && input.id != hotKeys[combo]) {
+      input.checked = false;
+    } else if (!input.checked && input.id == hotKeys[combo]) {
+      input.checked = true;
+      activateMenu(menu);
+    }
   }
 }
 
