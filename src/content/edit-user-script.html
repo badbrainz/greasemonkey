@@ -41,181 +41,181 @@
 </head>
 
 <body>
-<ul id="menus">
+<ul id="menus" tabindex="0">
   <li class="menu">
-    <input type="checkbox" id="file">
-    <label for="file" class="activator">File</label>
-    <div class="dropdown" tabIndex="-1">
-      <label for="file" class="dropdown-item" id="file-save" tabIndex="-1">
+    <input type="radio" name="menu" id="file">
+    <span class="activator">File</span>
+    <div class="dropdown">
+      <button type="button" class="dropdown-item" id="file-save">
         <span>Save</span>
         <span class="shortcut"></span>
-      </label>
+      </button>
     </div>
-    <label for="file" class="backdrop"></label>
+    <div class="backdrop"></div>
   </li>
   <li class="menu">
-    <input type="checkbox" id="edit">
-    <label for="edit" class="activator">Edit</label>
-    <div class="dropdown" tabIndex="-1">
-      <label for="edit" class="dropdown-item" id="edit-undo" tabIndex="-1">
+    <input type="radio" name="menu" id="edit">
+    <span class="activator">Edit</span>
+    <div class="dropdown">
+      <button type="button" class="dropdown-item" id="edit-undo">
         <span>Undo</span>
         <span class="shortcut"></span>
-      </label>
-      <label for="edit" class="dropdown-item" id="edit-redo" tabIndex="-1">
+      </button>
+      <button type="button" class="dropdown-item" id="edit-redo">
         <span>Redo</span>
         <span class="shortcut"></span>
-      </label>
+      </button>
       <hr>
-      <label for="edit" class="dropdown-item" id="edit-indent-more" tabIndex="-1">
+      <button type="button" class="dropdown-item" id="edit-indent-more">
         <span>Indent</span>
         <span class="shortcut"></span>
-      </label>
-      <label for="edit" class="dropdown-item" id="edit-indent-less" tabIndex="-1">
+      </button>
+      <button type="button" class="dropdown-item" id="edit-indent-less">
         <span>Unindent</span>
         <span class="shortcut"></span>
-      </label>
-      <label for="edit" class="dropdown-item" id="edit-indent-auto" tabIndex="-1">
+      </button>
+      <button type="button" class="dropdown-item" id="edit-indent-auto">
         <span>Auto Indent</span>
         <span class="shortcut"></span>
-      </label>
+      </button>
       <hr>
-      <label for="edit" class="dropdown-item" id="edit-delete-line" tabIndex="-1">
+      <button type="button" class="dropdown-item" id="edit-delete-line">
         <span>Delete Line</span>
         <span class="shortcut"></span>
-      </label>
+      </button>
       <hr>
-      <label for="edit" class="dropdown-item" id="edit-jump-to-line" tabIndex="-1">
+      <button type="button" class="dropdown-item" id="edit-jump-to-line">
         <span>Jump to Line</span>
         <span class="shortcut"></span>
-      </label>
+      </button>
       <hr>
-      <label for="edit" class="dropdown-item" id="edit-fold" tabIndex="-1">
+      <button type="button" class="dropdown-item" id="edit-fold">
         <span>Fold</span>
         <span class="shortcut"></span>
-      </label>
-      <label for="edit" class="dropdown-item" id="edit-unfold" tabIndex="-1">
+      </button>
+      <button type="button" class="dropdown-item" id="edit-unfold">
         <span>Unold</span>
         <span class="shortcut"></span>
-      </label>
-      <label for="edit" class="dropdown-item" id="edit-fold-all" tabIndex="-1">
+      </button>
+      <button type="button" class="dropdown-item" id="edit-fold-all">
         <span>Fold All</span>
         <span class="shortcut"></span>
-      </label>
-      <label for="edit" class="dropdown-item" id="edit-unfold-all" tabIndex="-1">
+      </button>
+      <button type="button" class="dropdown-item" id="edit-unfold-all">
         <span>Unold All</span>
         <span class="shortcut"></span>
-      </label>
+      </button>
     </div>
-    <label for="edit" class="backdrop"></label>
+    <div class="backdrop"></div>
   </li>
   <li class="menu">
-    <input type="checkbox" id="view">
-    <label for="view" class="activator">View</label>
-    <div class="dropdown" tabIndex="-1">
-      <label for="view" class="dropdown-item" id="view-increase-font" tabIndex="-1">
+    <input type="radio" name="menu" id="view">
+    <span class="activator">View</span>
+    <div class="dropdown">
+      <button type="button" class="dropdown-item" id="view-increase-font">
         <span>Increase Font Size</span>
         <span class="shortcut"></span>
-      </label>
-      <label for="view" class="dropdown-item" id="view-decrease-font" tabIndex="-1">
+      </button>
+      <button type="button" class="dropdown-item" id="view-decrease-font">
         <span>Decrease Font Size</span>
         <span class="shortcut"></span>
-      </label>
+      </button>
     </div>
-    <label for="view" class="backdrop"></label>
+    <div class="backdrop"></div>
   </li>
   <li class="menu">
-    <input type="checkbox" id="search">
-    <label for="search" class="activator">Search</label>
-    <div class="dropdown" tabIndex="-1">
-      <label for="search" class="dropdown-item" id="search-find" tabIndex="-1">
+    <input type="radio" name="menu" id="search">
+    <span class="activator">Search</span>
+    <div class="dropdown">
+      <button type="button" class="dropdown-item" id="search-find">
         <span>Find</span>
         <span class="shortcut"></span>
-      </label>
-      <label for="search" class="dropdown-item" id="search-find-next" tabIndex="-1">
+      </button>
+      <button type="button" class="dropdown-item" id="search-find-next">
         <span>Find Next</span>
         <span class="shortcut"></span>
-      </label>
-      <label for="search" class="dropdown-item" id="search-find-prev" tabIndex="-1">
+      </button>
+      <button type="button" class="dropdown-item" id="search-find-prev">
         <span>Find Previous</span>
         <span class="shortcut"></span>
-      </label>
+      </button>
       <hr>
-      <label for="search" class="dropdown-item" id="search-replace" tabIndex="-1">
+      <button type="button" class="dropdown-item" id="search-replace">
         <span>Replace</span>
         <span class="shortcut"></span>
-      </label>
-      <label for="search" class="dropdown-item" id="search-replace-all" tabIndex="-1">
+      </button>
+      <button type="button" class="dropdown-item" id="search-replace-all">
         <span>Replace All</span>
         <span class="shortcut"></span>
-      </label>
+      </button>
     </div>
-    <label for="search" class="backdrop"></label>
+    <div class="backdrop"></div>
   </li>
   <li class="menu">
-    <input type="checkbox" id="options">
-    <label for="options" class="activator">Options</label>
-    <div class="dropdown" tabIndex="-1">
-      <label class="dropdown-item" tabIndex="-1">
+    <input type="radio" name="menu" id="options">
+    <span class="activator">Options</span>
+    <div class="dropdown">
+      <div class="dropdown-item">
         <input type="radio" name="spaces" id="options-indent-with-tabs">
-        <label for="options">Indent With Tabs</label>
-      </label>
-      <label class="dropdown-item" tabIndex="-1">
+        <span>Indent With Tabs</span>
+      </div>
+      <div class="dropdown-item">
         <input type="radio" name="spaces" id="options-indent-two-spaces">
-        <label for="options">2 Spaces</label>
-      </label>
-      <label class="dropdown-item" tabIndex="-1">
+        <span>2 Spaces</span>
+      </div>
+      <div class="dropdown-item">
         <input type="radio" name="spaces" id="options-indent-four-spaces">
-        <label for="options">4 Spaces</label>
-      </label>
+        <span>4 Spaces</span>
+      </div>
       <hr>
-      <label class="dropdown-item" tabIndex="-1">
+      <div class="dropdown-item">
         <input type="checkbox" id="options-line-wrap">
-        <label for="options">Wrap Long Lines</label>
-      </label>
+        <label for="options-line-wrap">Wrap Long Lines</label>
+      </div>
       <hr>
-      <label class="dropdown-item" tabIndex="-1">
+      <div class="dropdown-item">
         <input type="checkbox" id="options-highlight-brackets">
-        <label for="options">Highlight brackets</label>
-      </label>
+        <span>Highlight brackets</span>
+      </div>
       <hr>
-      <label class="dropdown-item" tabIndex="-1">
+      <div class="dropdown-item">
         <input type="checkbox" id="options-linter">
-        <label for="options">Lint Metablock</label>
-      </label>
-      <label class="dropdown-item" tabIndex="-1">
+        <span>Lint Metablock</span>
+      </div>
+      <div class="dropdown-item">
         <input type="checkbox" id="options-autocomplete">
-        <label for="options">Autocomplete</label>
-      </label>
+        <span>Autocomplete</span>
+      </div>
     </div>
-    <label for="options" class="backdrop"></label>
+    <div class="backdrop"></div>
   </li>
   <li class="menu">
-    <input type="checkbox" id="addons">
-    <label for="addons" class="activator">Addons</label>
-    <div class="dropdown" tabIndex="-1">
-      <label for="addons" class="dropdown-item" id="addons-find-bracket" tabIndex="-1">
+    <input type="radio" name="menu" id="addons">
+    <span class="activator">Addons</span>
+    <div class="dropdown">
+      <button type="button" class="dropdown-item" id="addons-find-bracket">
         <span>Find Matching Bracket</span>
         <span class="shortcut"></span>
-      </label>
-      <label for="addons" class="dropdown-item" id="addons-show-hints" tabIndex="-1">
+      </button>
+      <button type="button" class="dropdown-item" id="addons-show-hints">
         <span>Show Hints</span>
         <span class="shortcut"></span>
-      </label>
+      </button>
     </div>
-    <label for="addons" class="backdrop"></label>
+    <div class="backdrop"></div>
   </li>
   <li class="menu">
-    <input type="checkbox" id="help">
-    <label for="help" class="activator">Help</label>
-    <div class="dropdown" tabIndex="-1">
-      <label for="help" class="dropdown-item" id="help-home-page" tabIndex="-1">
+    <input type="radio" name="menu" id="help">
+    <span class="activator">Help</span>
+    <div class="dropdown">
+      <button type="button" class="dropdown-item" id="help-home-page">
         Greasemonkey Home Page
-      </label>
-      <label for="help" class="dropdown-item" id="help-wiki" tabIndex="-1">
+      </button>
+      <button type="button" class="dropdown-item" id="help-wiki">
         Greasemonkey Wiki
-      </label>
+      </button>
     </div>
-    <label for="help" class="backdrop"></label>
+    <div class="backdrop"></div>
   </li>
 </ul>
 <ul id="tabs"></ul>

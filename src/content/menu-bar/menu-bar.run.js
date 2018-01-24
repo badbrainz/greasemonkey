@@ -127,8 +127,5 @@ $q('#help-wiki').onclick = event => {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-for (let menu of $a('#menus .menu')) {
-  menu.addEventListener('change', onMenuToggled, true);
-}
-
-document.addEventListener('keydown', onHotKey, true);
+$q('#menus').addEventListener('keydown', onMenuEvent, true);
+$q('#menus').addEventListener('click', onMenuEvent, true);

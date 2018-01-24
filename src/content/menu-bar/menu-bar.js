@@ -1,62 +1,16 @@
 let $q = (selector, parent = document) => parent.querySelector(selector);
 let $a = (selector, parent = document) => parent.querySelectorAll(selector);
 
-// Map combo keys to menu checkboxes here.
+// Define radio(name="menu") key map here.
 
-const hotKeys = {
-  'Alt-F': 'file',
-  'Alt-E': 'edit',
-  'Alt-V': 'view',
-  'Alt-S': 'search',
-  'Alt-O': 'options',
-  'Alt-A': 'addons',
-  'Alt-H': 'help',
-};
-
-const menuState = {
-  menu: null,
-  items: [],
-  index: -1,
-
-  handleEvent(event) {
-    let keyname = CodeMirror.keyNames[event.keyCode];
-    switch (keyname) {
-      case 'Up':
-        if (this.items[this.index] && this.items[this.index - 1]) {
-          this.items[--this.index].focus();
-        } else {
-          this.index = this.items.length - 1;
-          this.items[this.index].focus();
-        }
-        break;
-      case 'Down':
-        if (this.items[this.index] && this.items[this.index + 1]) {
-          this.items[++this.index].focus();
-        } else {
-          this.index = 0
-          this.items[this.index].focus();
-        }
-        break;
-      case 'Enter':
-        if (this.items[this.index]) {
-          event.preventDefault();
-          this.items[this.index].click();
-        } else {
-          this.index = 0
-          this.items[this.index].focus();
-        }
-        break;
-      case 'Esc':
-        this.menu.firstElementChild.click();
-        editor.focus();
-        break;
-      case 'Tab':
-        event.preventDefault();
-        break;
-      default:
-        break;
-    }
-  }
+const menuHotKeys = {
+  'Alt-F': () => activateMenu('file'),
+  'Alt-E': () => activateMenu('edit'),
+  'Alt-V': () => activateMenu('view'),
+  'Alt-S': () => activateMenu('search'),
+  'Alt-O': () => activateMenu('options'),
+  'Alt-A': () => activateMenu('addons'),
+  'Alt-H': () => activateMenu('help')
 };
 
 function lookupCommandKey(command, keyMap) {
@@ -86,49 +40,69 @@ function menuCommand(cmd, focus = true) {
   };
 }
 
-function activateMenu(menu) {
-  if (menuState.menu) {
-    menuState.menu.removeEventListener('keydown', menuState, true);
-  }
-  menuState.menu = menu;
-  menuState.menu.addEventListener('keydown', menuState, true);
-  menuState.items = $a('.dropdown-item', menuState.menu);
-  menuState.index = -1;
-  $q('.dropdown', menuState.menu).focus();
+function activateMenu(id) {
+  let trigger = $q(`input[name="menu"][id="${id}"]`);
+  trigger.checked = true;
+  trigger.focus();
 }
 
-function onMenuToggled(event) {
-  if (!event.target.isSameNode(event.currentTarget.firstElementChild)) {
-    event.currentTarget.firstElementChild.click();
-  } else if (event.target.checked) {
-    activateMenu(event.currentTarget);
-  }
-}
+function onMenuEvent(event) {
+  let menubar = event.currentTarget;
 
-function onHotKey(event) {
-  let combo = CodeMirror.keyName(event);
-  if (!hotKeys.hasOwnProperty(combo)) {
+  let activator = $q('input[name="menu"]:checked', menubar);
+  if (!activator) return;
+
+  let dropdown = $q('input[name="menu"]:checked ~ .dropdown', menubar);
+  let currentItem = $q(':focus', dropdown);
+
+  if (event.type == 'click') {
+    if (currentItem || event.target.classList.contains('backdrop')) {
+      activator.checked = false;
+    }
     return;
   }
 
-  event.preventDefault();
-  event.stopPropagation();
+  let keyName = CodeMirror.keyName(event);
 
-  // BUG menubar won't receive focus if hotkey is pressed inside search dialog.
-  if (event.target.className.includes('CodeMirror-search-field')) {
+  if (menuHotKeys.hasOwnProperty(keyName)) {
+    menuHotKeys[keyName]();
+    event.preventDefault();
     return;
   }
 
-  for (let menu of $a('#menus .menu')) {
-    let input = menu.firstElementChild;
-    if (input.checked && input.id != hotKeys[combo]) {
-      input.checked = false;
-    } else if (!input.checked && input.id == hotKeys[combo]) {
-      input.checked = true;
-      activateMenu(menu);
+  switch (keyName) {
+    case 'Esc':
+      activator.checked = false;
+      activator.focus();
+      break;
+    case 'Enter':
+      if (currentItem) {
+        event.preventDefault();
+        currentItem.click();
+        activator.checked = false;
+      }
+      break;
+    case 'Space':
+      if (currentItem) {
+        event.preventDefault();
+      }
+      break;
+    case 'Tab':
+      if (document.activeElement === dropdown.lastElementChild ||
+          dropdown.lastElementChild.contains(document.activeElement)) {
+        activator.checked = false;
+      }
+      break;
+    case 'Shift-Tab':
+      if (document.activeElement === activator) {
+        event.preventDefault();
+        activator.checked = false;
+      }
+      break;
+    default:
+      break;
     }
   }
-}
 
 ///////////////////////////////////////////////////////////////////////////////
 

@@ -1,94 +1,105 @@
 #menus {
   font-family: arial, sans-serif;
   font-size: .825rem;
+  display: flex;
   margin: 0 0 8px;
   padding: 0;
-  display: flex;
-  z-index: 10;
+  box-shadow: 0 1px 0px 0px darkgrey;
   user-select: none;
-  border-bottom: solid 1px darkgrey;
-  flex: 0 0 auto;
+  z-index: 8;
 }
 #menus li {
   list-style-type: none;
 }
 #menus .menu {
   position: relative;
-  display: flex;
 }
-#menus .menu > input[type="checkbox"] {
-  display: none;
-}
-#menus .menu > input[type="checkbox"]:checked ~ .activator {
-  background: rgba(0,0,0,.1);
-  z-index: 3;
-}
-#menus .menu > input[type="checkbox"]:checked ~ .dropdown,
-#menus .menu > input[type="checkbox"]:checked ~ .backdrop {
-  display: block;
-}
-#menus .menu .dropdown {
-  display: none;
-  min-width: 150px;
-  padding: 4px 0;
-  overflow: hidden;
+#menus input[name="menu"] {
   position: absolute;
-  top: 100%;
-  background-color: white;
-  box-shadow: 0 0 0 1px rgba(0,0,0,.15), 0 2px 4px rgba(0,0,0,0.5);
-  z-index: 2;
-}
-#menus .menu .backdrop {
-  display: none;
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
   z-index: 1;
 }
-#menus .menu .activator,
+#menus input[name="menu"]:checked {
+  background: rgba(0,0,0,.05);
+}
+#menus input[name="menu"]:checked ~ .dropdown,
+#menus input[name="menu"]:checked ~ .backdrop {
+  display: block;
+}
+#menus .dropdown {
+  position: absolute;
+  min-width: 150px;
+  padding: 4px 0;
+  top: 100%;
+  display: none;
+  background-color: white;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, .15), 0 2px 4px rgba(0, 0, 0, .5);
+  z-index: 1;
+}
+#menus .backdrop {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: none;
+}
+#menus .activator,
 #menus .dropdown-item {
-  padding: 4px 8px;
-  line-height: 18px;
+  padding: 0 8px;
+  line-height: 2;
+  cursor: default;
 }
 #menus .dropdown-item {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  position: relative;
   white-space: nowrap;
+  width: 100%;
+  box-sizing: border-box;
 }
 #menus .dropdown-item .shortcut {
   color: grey;
   margin-left: 2em;
 }
-#menus .dropdown-item input[type="radio"],
-#menus .dropdown-item input[type="checkbox"] {
-  margin: 0;
+#menus .dropdown-item input {
   position: absolute;
-  opacity: 0;
-  width: 100%;
-  height: 100%;
   left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0;
+  width: 100%;
 }
-#menus .dropdown-item input[type="radio"] ~ label::before,
-#menus .dropdown-item input[type="checkbox"] ~ label::before {
-  content: '';
+#menus .dropdown-item input ~ :before {
   font-family: FontAwesome;
+  content: '';
+  display: inline-block;
   margin-right: .4em;
   width: 1em;
-  display: inline-block;
 }
-#menus .dropdown-item input[type="radio"]:checked ~ label::before,
-#menus .dropdown-item input[type="checkbox"]:checked ~ label::before {
+#menus .dropdown-item input:checked ~ :before {
   content: '\f00c';
 }
-#menus .menu .activator:hover,
-#menus .dropdown-item:hover {
-  background: rgba(0,0,0,.05);
+#menus input[name="menu"]:hover,
+#menus .dropdown-item:hover,
+#menus .dropdown-item:focus {
+  background: rgba(0, 0, 0, .05);
 }
-#menus .menu .activator,
-#menus .menu .dropdown-item {
-  cursor: default;
+#menus input:focus,
+#menus .dropdown-item input:focus {
+  background-color: rgba(0, 0, 0, .05);
+}
+#menus input,
+#menus button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background: none;
+  border: none;
+}
+#menus :focus {
+  outline: none;
 }

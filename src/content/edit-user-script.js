@@ -33,6 +33,8 @@ const editorOptions = (function() {
     editorOptions.gutters.push('CodeMirror-lint-markers');
   }
 
+  Object.assign(editorOptions.extraKeys, menuHotKeys);
+
   return editorOptions;
 })();
 
