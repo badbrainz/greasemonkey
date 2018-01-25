@@ -79,7 +79,6 @@ function onMenuEvent(event) {
       if (currentItem) {
         event.preventDefault();
         currentItem.click();
-        activator.checked = false;
       }
       break;
     case 'Space':
