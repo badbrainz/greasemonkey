@@ -43,8 +43,8 @@ $q('#edit-unfold-all').onclick = menuCommand('unfoldAll');
 // View
 $q('#view-increase-font').onclick = menuCommand('increaseFontSize');
 $q('#view-decrease-font').onclick = menuCommand('decreaseFontSize');
-$q('#view-next-doc').onclick = menuCommand('goToNextDoc');
-$q('#view-previous-doc').onclick = menuCommand('goToPreviousDoc');
+$q('#view-next-doc').onclick = menuCommand('viewNextDoc');
+$q('#view-previous-doc').onclick = menuCommand('viewPreviousDoc');
 
 // Search
 $q('#search-find').onclick = menuCommand('find', false);
