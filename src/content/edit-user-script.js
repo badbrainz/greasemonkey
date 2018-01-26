@@ -21,7 +21,9 @@ const editorOptions = (function() {
       ['Shift-' + ctrl + '0']: 'foldAll',
       ['Shift-' + ctrl + '9']: 'unfoldAll',
       [ctrl + 'M']: 'goToBracket',
-      [ctrl + 'Space']: 'autocomplete'
+      [ctrl + 'Space']: 'autocomplete',
+      ['Shift-' + ctrl + ']']: 'viewNextDoc',
+      ['Shift-' + ctrl + '[']: 'viewPreviousDoc'
     }
   };
 

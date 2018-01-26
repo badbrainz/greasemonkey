@@ -150,3 +150,17 @@ CodeMirror.commands.autocomplete = cm => {
     'completeSingle': false
   });
 };
+
+CodeMirror.commands.viewNextDoc = cm => {
+  let selectedTab = $q('#tabs .tab.active');
+  if (selectedTab.nextElementSibling) {
+    selectedTab.nextElementSibling.click();
+  }
+};
+
+CodeMirror.commands.viewPreviousDoc = cm => {
+  let selectedTab = $q('#tabs .tab.active');
+  if (selectedTab.previousElementSibling) {
+    selectedTab.previousElementSibling.click();
+  }
+};

@@ -12,6 +12,8 @@ setMenuShortcut('#edit-fold-all', 'foldAll');
 setMenuShortcut('#edit-unfold-all', 'unfoldAll');
 setMenuShortcut('#view-increase-font', 'increaseFontSize');
 setMenuShortcut('#view-decrease-font', 'decreaseFontSize');
+setMenuShortcut('#view-next-doc', 'viewNextDoc');
+setMenuShortcut('#view-previous-doc', 'viewPreviousDoc');
 setMenuShortcut('#search-find', 'find');
 setMenuShortcut('#search-find-next', 'findNext');
 setMenuShortcut('#search-find-prev', 'findPrev');
@@ -41,6 +43,8 @@ $q('#edit-unfold-all').onclick = menuCommand('unfoldAll');
 // View
 $q('#view-increase-font').onclick = menuCommand('increaseFontSize');
 $q('#view-decrease-font').onclick = menuCommand('decreaseFontSize');
+$q('#view-next-doc').onclick = menuCommand('goToNextDoc');
+$q('#view-previous-doc').onclick = menuCommand('goToPreviousDoc');
 
 // Search
 $q('#search-find').onclick = menuCommand('find', false);
