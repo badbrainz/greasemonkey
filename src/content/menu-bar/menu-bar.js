@@ -1,166 +1,122 @@
-let $q = (selector, parent = document) => parent.querySelector(selector);
-let $a = (selector, parent = document) => parent.querySelectorAll(selector);
-
-// Define radio(name="menu") key map here.
-
-const menuHotKeys = {
-  'Alt-F': () => activateMenu('file'),
-  'Alt-E': () => activateMenu('edit'),
-  'Alt-V': () => activateMenu('view'),
-  'Alt-S': () => activateMenu('search'),
-  'Alt-O': () => activateMenu('options'),
-  'Alt-A': () => activateMenu('addons'),
-  'Alt-H': () => activateMenu('help')
-};
-
-function lookupCommandKey(command, keyMap) {
-  let key = Object.keys(keyMap).find(k => keyMap[k] == command);
-  if (key) return key;
-  if (keyMap.fallthrough)
-    return lookupCommandKey(command, CodeMirror.keyMap[keyMap.fallthrough]);
-  return '';
-}
-
-function setMenuShortcut(selector, command) {
-  let extra = editor.getOption('extraKeys');
-  let key = extra && lookupCommandKey(command, extra);
-  if (!key) {
-    let map = CodeMirror.keyMap[editor.getOption('keyMap')];
-    key = lookupCommandKey(command, map);
-  }
-  $q(selector + ' .shortcut').innerText = key;
-}
-
-function menuCommand(cmd, focus = true) {
-  return () => {
-    editor.execCommand(cmd);
-    if (focus) {
-      editor.focus();
-    }
-  };
-}
-
-function activateMenu(id) {
-  let trigger = $q(`input[name="menu"][id="${id}"]`);
-  trigger.checked = true;
-  trigger.focus();
-}
-
-function onMenuEvent(event) {
-  let menubar = event.currentTarget;
-
-  let activator = $q('input[name="menu"]:checked', menubar);
-  if (!activator) return;
-
-  let dropdown = $q('input[name="menu"]:checked ~ .dropdown', menubar);
-  let currentItem = $q(':focus', dropdown);
-
-  if (event.type == 'click') {
-    if (currentItem || event.target.classList.contains('backdrop')) {
-      activator.checked = false;
-    }
-    return;
+class Menu {
+  constructor(name) {
+    this.name = name;
+    this.items = [];
+    this.index = -1;
+    this.opened = false;
   }
 
-  let keyName = CodeMirror.keyName(event);
+  addItem(str, exec) {
+    let [text, cmd, key] = str.split(':');
+    this.items.push({ text, cmd, key, exec });
+    return this;
+  }
 
-  if (menuHotKeys.hasOwnProperty(keyName)) {
-    menuHotKeys[keyName]();
+  select(index) {
+    this.index += index;
+    if (this.index < 0) {
+      this.index = this.items.length - 1;
+    } else if (this.index >= this.items.length) {
+      this.index = 0;
+    }
+  }
+
+  selectByKey(key) {
+    this.index = this.items.findIndex(i => i.key == key);
+  }
+
+  accept(index) {
+    let item = this.items[index];
+    if (item && item.exec) item.exec();
+  }
+
+  open() {
+    this.opened = true;
+  }
+
+  close() {
+    this.opened = false;
+    this.index = -1;
+  }
+
+  traverse(event) {
+    switch (event.key) {
+      case 'ArrowDown':
+        this.select(1);
+        break;
+      case 'ArrowUp':
+        this.select(-1);
+        break;
+      case 'Enter':
+        this.accept(this.index);
+        event.preventDefault();
+        break;
+      default:
+        this.selectByKey(event.key);
+        if (this.index != -1) {
+          this.accept(this.index);
+          event.preventDefault();
+        }
+        return;
+    }
+  }
+}
+
+class MenuBar {
+  constructor() {
+    this.menus = [];
+    this.index = -1;
+    this.current = null;
+  }
+
+  addMenu(name) {
+    this.menus.push(new Menu(name));
+    return this.menus[this.menus.length - 1];
+  }
+
+  showMenu(name) {
+    let index = this.menus.findIndex(m => m.name == name);
+    if (index != this.index) this.toggle(index);
+  }
+
+  select(index) {
+    let i = this.index + index;
+    if (i < 0) i = this.menus.length - 1;
+    if (i >= this.menus.length) i = 0;
+    this.toggle(i);
+  }
+
+  toggle(index) {
+    if (this.current) this.current.close();
+    this.index = this.current === this.menus[index] ? -1 : index;
+    this.current = this.menus[this.index];
+    if (this.current) this.current.open();
+  }
+
+  traverse(event) {
+    if (this.current) {
+      this.current.traverse(event);
+    }
+
+    if (event.defaultPrevented) {
+      this.toggle(-1);
+      return;
+    }
+
+    switch (event.key) {
+      case 'ArrowLeft':
+        this.select(-1);
+        break;
+      case 'ArrowRight':
+        this.select(1);
+        break;
+      case 'Escape':
+        this.toggle(-1);
+        break;
+      default:
+        return;
+    }
+
     event.preventDefault();
-    return;
   }
-
-  switch (keyName) {
-    case 'Esc':
-      activator.checked = false;
-      activator.focus();
-      break;
-    case 'Enter':
-      if (currentItem) {
-        event.preventDefault();
-        currentItem.click();
-      }
-      break;
-    case 'Space':
-      if (currentItem) {
-        event.preventDefault();
-      }
-      break;
-    case 'Tab':
-      if (document.activeElement === dropdown.lastElementChild ||
-          dropdown.lastElementChild.contains(document.activeElement)) {
-        activator.checked = false;
-      }
-      break;
-    case 'Shift-Tab':
-      if (document.activeElement === activator) {
-        event.preventDefault();
-        activator.checked = false;
-      }
-      break;
-    default:
-      break;
-    }
-  }
-
-///////////////////////////////////////////////////////////////////////////////
-
-// Define options here.
-
-CodeMirror.defineOption('fontSize', 11, (cm, value) => {
-  cm.getWrapperElement().parentNode.style.fontSize = value + 'px';
-  cm.refresh();
-});
-
-CodeMirror.defineOption('autocomplete', false);
-
-///////////////////////////////////////////////////////////////////////////////
-
-// Define commands here.
-
-CodeMirror.commands.save = cm => {
-    onSave();
-};
-
-CodeMirror.commands.increaseFontSize = cm => {
-  cm.setOption('fontSize', cm.getOption('fontSize') + 1);
-};
-
-CodeMirror.commands.decreaseFontSize = cm => {
-  cm.setOption('fontSize', cm.getOption('fontSize') - 1);
-};
-
-CodeMirror.commands.goToBracket = cm => {
-  cm.extendSelectionsBy(range => {
-    let next = cm.scanForBracket(range.head, 1);
-    if (next && CodeMirror.cmpPos(next.pos, range.head) != 0) return next.pos;
-    let prev = cm.scanForBracket(range.head, -1);
-    return prev && CodeMirror.Pos(prev.pos.line, prev.pos.ch + 1) || range.head;
-  });
-};
-
-CodeMirror.commands.autocomplete = cm => {
-  cm.showHint({
-    'hint': (cm, options) => {
-      if (cm.getOption('autocomplete') && CodeMirror.hint.anyword) {
-        return CodeMirror.hint.anyword(cm, options);
-      }
-    },
-    'container': cm.getWrapperElement().parentNode,
-    'completeSingle': false
-  });
-};
-
-CodeMirror.commands.viewNextDoc = cm => {
-  let selectedTab = $q('#tabs .tab.active');
-  if (selectedTab.nextElementSibling) {
-    selectedTab.nextElementSibling.click();
-  }
-};
-
-CodeMirror.commands.viewPreviousDoc = cm => {
-  let selectedTab = $q('#tabs .tab.active');
-  if (selectedTab.previousElementSibling) {
-    selectedTab.previousElementSibling.click();
-  }
-};
+}

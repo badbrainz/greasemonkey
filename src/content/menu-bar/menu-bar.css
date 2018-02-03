@@ -1,109 +1,75 @@
-#menus {
-  display: flex;
-  margin: 0 0 8px;
-  padding: 0;
-  box-shadow: 0 1px 0px 0px darkgrey;
-  z-index: 8;
+/* Base styles */
+
+menubar {
+  z-index: 10;
 }
-#menus input,
-#menus button {
-  border: none;
+
+/* top menu */
+menubar button {
+  position: relative;
+}
+
+/* menu items */
+menubar ul {
   margin: 0;
-  padding: 0;
-  width: auto;
-  overflow: visible;
-  background: transparent;
-  color: inherit;
-  font: inherit;
-  line-height: normal;
-  text-align: inherit;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-}
-#menus input::-moz-focus-inner,
-#menus button::-moz-focus-inner {
-  padding: 0 8px;
-}
-#menus li {
+  position: absolute;
   list-style-type: none;
 }
-#menus .menu {
-  position: relative;
+menubar li {
+  white-space: nowrap;
 }
-#menus input[name="menu"] {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
+menubar li span {
+  margin-left: 1em;
 }
-#menus input[name="menu"]:checked {
-  background: rgba(0,0,0,.05);
-}
-#menus input[name="menu"] ~ .dropdown,
-#menus input[name="menu"] ~ .backdrop {
-  display: none;
-}
-#menus input[name="menu"]:checked ~ .dropdown,
-#menus input[name="menu"]:checked ~ .backdrop {
-  display: block;
-}
-#menus .dropdown {
-  position: absolute;
-  min-width: 150px;
-  padding: 4px 0;
-  top: 100%;
-  background-color: white;
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, .15), 0 2px 4px rgba(0, 0, 0, .5);
-  z-index: 1;
-}
-#menus .backdrop {
+
+/* trigger */
+menubar .trigger {
   position: fixed;
   top: 0;
-  right: 0;
   bottom: 0;
   left: 0;
+  right: 0;
 }
-#menus .activator,
-#menus .dropdown-item {
+menubar button, menubar ul {
+  z-index: 1;
+}
+
+
+/* Custom styles */
+
+menubar {
+  cursor: default;
   font-family: arial, sans-serif;
   font-size: 13px;
-  padding: 0 8px;
-  line-height: 2;
-  cursor: default;
 }
-#menus .dropdown-item {
-  position: relative;
+menubar button {
+  border: none;
+  font: inherit;
+  background: transparent;
+}
+menubar ul {
+  min-width: 150px;
+  padding: 4px 0;
+  background-color: white;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, .15), 0 2px 4px rgba(0, 0, 0, .5);
+}
+menubar li {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  white-space: nowrap;
-  width: 100%;
-  box-sizing: border-box;
 }
-#menus .dropdown-item .shortcut {
+menubar li:hover, menubar li.selected {
+  background: rgba(33, 150, 243, .25);
+}
+menubar button, menubar li {
+  line-height: 1.8;
+  padding: 0 8px;
+}
+menubar :focus {
+  outline: none;
+}
+menubar button.focused {
+  background: rgba(0,0,0,.15);
+}
+menubar li span {
   color: grey;
-  margin-left: 2em;
-}
-#menus .dropdown-item input {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-}
-#menus .dropdown-item input ~ :before {
-  font-family: FontAwesome;
-  content: '';
-  display: inline-block;
-  margin-right: .4em;
-  width: 1em;
-}
-#menus .dropdown-item input:checked ~ :before {
-  content: '\f00c';
-}
-#menus input[name="menu"]:hover,
-#menus .dropdown-item:hover,
-#menus .dropdown-item:focus,
-#menus .dropdown-item input:focus {
-  background: rgba(0, 0, 0, .05);
 }

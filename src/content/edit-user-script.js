@@ -2,9 +2,6 @@
 // TODO: Put name in title.
 
 const editorOptions = (function() {
-  let isMac = CodeMirror.keyMap['default'] == CodeMirror.keyMap.macDefault;
-  let ctrl = isMac ? 'Cmd-' : 'Ctrl-';
-
   let editorOptions = {
     'tabSize': 2,
     'lineNumbers': true,
@@ -12,19 +9,7 @@ const editorOptions = (function() {
     'lint': true,
     'gutters': [],
     'matchBrackets': false,
-    'autocomplete': false,
-    'extraKeys': {
-      [ctrl + "'"]: 'increaseFontSize',
-      [ctrl + ';']: 'decreaseFontSize',
-      [ctrl + '0']: 'fold',
-      [ctrl + '9']: 'unfold',
-      ['Shift-' + ctrl + '0']: 'foldAll',
-      ['Shift-' + ctrl + '9']: 'unfoldAll',
-      [ctrl + 'M']: 'goToBracket',
-      [ctrl + 'Space']: 'autocomplete',
-      ['Shift-' + ctrl + ']']: 'viewNextDoc',
-      ['Shift-' + ctrl + '[']: 'viewPreviousDoc'
-    }
+    'autocomplete': false
   };
 
   if (localStorage.hasOwnProperty('editor')) {
@@ -34,8 +19,6 @@ const editorOptions = (function() {
   if (editorOptions.lint) {
     editorOptions.gutters.push('CodeMirror-lint-markers');
   }
-
-  Object.assign(editorOptions.extraKeys, menuHotKeys);
 
   return editorOptions;
 })();
@@ -191,3 +174,61 @@ editor.on('optionChange', (cm, option) => {
     localStorage.editor = JSON.stringify(config);
   }
 });
+
+let menuBar = new MenuBar();
+
+menuBar.addMenu('File')
+  .addItem('Save:save:s', () => editor.execCommand('save'));
+
+menuBar.addMenu('Edit')
+  .addItem('Undo:undo:u', () => editor.execCommand('undo'))
+  .addItem('Redo:redo:r', () => editor.execCommand('redo'))
+  .addItem('Indent More:indentMore:]', () => editor.execCommand('indentMore'))
+  .addItem('Indent Less:indentLess:[', () => editor.execCommand('indentLess'))
+  .addItem('Indent Auto:indentAuto', () => editor.execCommand('indentAuto'))
+  .addItem('Jump to Line:jumpToLine:j', () => editor.execCommand('jumpToLine'))
+  .addItem('Fold:fold', () => editor.execCommand('fold'))
+  .addItem('Unfold:unfold', () => editor.execCommand('unfold'))
+  .addItem('Fold All:foldAll', () => editor.execCommand('foldAll'))
+  .addItem('Unfold All:unfoldAll', () => editor.execCommand('unfoldAll'));
+
+menuBar.addMenu('View')
+  .addItem('Font Size +:increaseFontSize:i', () => editor.execCommand('increaseFontSize'))
+  .addItem('Font Size -:decreaseFontSize:d', () => editor.execCommand('decreaseFontSize'))
+  .addItem('Next Document:viewNextDoc:n', () => editor.execCommand('viewNextDoc'))
+  .addItem('Previous Document:viewPreviousDoc:p', () => editor.execCommand('viewPreviousDoc'));
+
+menuBar.addMenu('Search')
+  .addItem('Find:find:f', () => editor.execCommand('find'))
+  .addItem('Find Next:findNext:n', () => editor.execCommand('findNext'))
+  .addItem('Find Previous:findPrev:p', () => editor.execCommand('findPrev'))
+  .addItem('Replace:replace:r', () => editor.execCommand('replace'))
+  .addItem('Replace All:replaceAll:a', () => editor.execCommand('replaceAll'));
+
+menuBar.addMenu('Addons')
+  .addItem('Auto Complete:autocomplete:a', () => editor.execCommand('autocomplete'))
+  .addItem('Find Bracket:goToBracket:b', () => editor.execCommand('goToBracket'));
+
+rivets.bind(document.querySelector('menubar'), { menubar: menuBar });
+
+{
+  let isMac = CodeMirror.keyMap['default'] == CodeMirror.keyMap.macDefault;
+  let ctrl = isMac ? 'Cmd-' : 'Ctrl-';
+  let extraKeys = {};
+  extraKeys[ctrl + "'"] = 'increaseFontSize';
+  extraKeys[ctrl + ';'] = 'decreaseFontSize';
+  extraKeys[ctrl + '0'] = 'fold';
+  extraKeys[ctrl + '9'] = 'unfold';
+  extraKeys[ctrl + 'M'] = 'goToBracket';
+  extraKeys[ctrl + 'Space'] = 'autocomplete';
+  extraKeys['Shift-' + ctrl + '0'] = 'foldAll';
+  extraKeys['Shift-' + ctrl + '9'] = 'unfoldAll';
+  extraKeys['Shift-' + ctrl + ']'] = 'viewNextDoc';
+  extraKeys['Shift-' + ctrl + '['] = 'viewPreviousDoc';
+  extraKeys['Alt-F'] = () => menuBar.showMenu('File');
+  extraKeys['Alt-E'] = () => menuBar.showMenu('Edit');
+  extraKeys['Alt-V'] = () => menuBar.showMenu('View');
+  extraKeys['Alt-S'] = () => menuBar.showMenu('Search');
+  extraKeys['Alt-A'] = () => menuBar.showMenu('Addons');
+  editor.setOption('extraKeys', extraKeys);
+}
