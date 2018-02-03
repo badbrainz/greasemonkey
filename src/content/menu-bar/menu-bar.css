@@ -57,7 +57,7 @@ menubar li {
   display: flex;
   justify-content: space-between;
 }
-menubar li:hover, menubar li.selected {
+menubar li.selected {
   background: rgba(33, 150, 243, .25);
 }
 menubar button, menubar li {
