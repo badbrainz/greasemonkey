@@ -13,7 +13,7 @@ class Menu {
   }
 
   select(index) {
-    this.index += index;
+    this.index = index;
     if (this.index < 0) {
       this.index = this.items.length - 1;
     } else if (this.index >= this.items.length) {
@@ -42,10 +42,10 @@ class Menu {
   traverse(event) {
     switch (event.key) {
       case 'ArrowDown':
-        this.select(1);
+        this.select(this.index + 1);
         break;
       case 'ArrowUp':
-        this.select(-1);
+        this.select(this.index - 1);
         break;
       case 'Enter':
         this.accept(this.index);
@@ -80,7 +80,7 @@ class MenuBar {
   }
 
   select(index) {
-    let i = this.index + index;
+    let i = index;
     if (i < 0) i = this.menus.length - 1;
     if (i >= this.menus.length) i = 0;
     this.toggle(i);
@@ -105,10 +105,10 @@ class MenuBar {
 
     switch (event.key) {
       case 'ArrowLeft':
-        this.select(-1);
+        this.select(this.index - 1);
         break;
       case 'ArrowRight':
-        this.select(1);
+        this.select(this.index + 1);
         break;
       case 'Escape':
         this.toggle(-1);
