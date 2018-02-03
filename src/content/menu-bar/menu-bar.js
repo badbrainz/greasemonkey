@@ -113,6 +113,8 @@ class MenuBar {
       case 'Escape':
         this.toggle(-1);
         break;
+      case 'Tab':
+        break;
       default:
         return;
     }
