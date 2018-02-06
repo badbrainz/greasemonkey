@@ -51,6 +51,9 @@ class Menu {
         this.accept(this.index);
         event.preventDefault();
         break;
+      case 'Tab':
+        event.preventDefault();
+        break;
       default:
         this.selectByKey(event.key);
         if (this.index != -1) {
@@ -112,8 +115,6 @@ class MenuBar {
         break;
       case 'Escape':
         this.toggle(-1);
-        break;
-      case 'Tab':
         break;
       default:
         return;
