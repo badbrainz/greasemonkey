@@ -52,6 +52,7 @@ rivets.components.menubar = {
   template: function() {
     return `
       <button
+        type="button" tabindex="-1"
         rv-each-menu="menubar.menus"
         rv-on-click="menubar.toggle | args index"
         rv-on-keydown="menubar.traverse | ctx"
