@@ -28,6 +28,10 @@ rivets.formatters.eq = function(a, b) {
   return a == b;
 };
 
+rivets.formatters.cond = function(cond, a, b) {
+  return cond ? a : b;
+};
+
 rivets.binders.focus = function(el, value) {
   if (el.classList.toggle('focused', value)) el.focus();
   else el.blur();
@@ -52,10 +56,11 @@ rivets.components.menubar = {
   template: function() {
     return `
       <button
-        type="button" tabindex="-1"
+        type="button"
         rv-each-menu="menubar.menus"
         rv-on-click="menubar.toggle | args index"
         rv-on-keydown="menubar.traverse | ctx"
+        rv-tabindex="menu.opened | cond 0 -1"
         rv-focus="menu.opened"
         rv-text="menu.name">
       </button>
