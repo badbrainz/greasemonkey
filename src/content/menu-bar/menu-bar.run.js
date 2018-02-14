@@ -24,6 +24,27 @@ menuBar.addMenu('Search')
   .addItem('execCommand', { text: 'Replace', cmd: 'replace', foc: false, key: 'r' })
   .addItem('execCommand', { text: 'Replace All', cmd: 'replaceAll', foc: false, key: 'a' });
 
+menuBar.addMenu('Options')
+  .addItem('setOption', {
+    text: 'Line Numbers',
+    opt: 'lineNumbers',
+    val: editor.getOption('lineNumbers')
+  })
+  .addItem('setOption', {
+    text: 'Wrap Lines',
+    opt: 'lineWrapping',
+    val: editor.getOption('lineWrapping')
+  })
+  .addItem('setOption', {
+    text: 'Highlight Brackets',
+    opt: 'matchBrackets',
+    val: editor.getOption('matchBrackets')
+  })
+  .addItem('setOption', {
+    text: 'Lint Metadata',
+    opt: 'lint',
+    val: editor.getOption('lint')
+  });
 
 menuBar.addMenu('Addons')
   .addItem('execCommand', { text: 'Auto Complete', cmd: 'autocomplete' })
@@ -36,5 +57,6 @@ editor.setOption('extraKeys',
     ['Alt-F']: () => menuBar.showMenu('File'),
     ['Alt-E']: () => menuBar.showMenu('Edit'),
     ['Alt-S']: () => menuBar.showMenu('Search'),
+    ['Alt-O']: () => menuBar.showMenu('Options'),
     ['Alt-A']: () => menuBar.showMenu('Addons')
   }));

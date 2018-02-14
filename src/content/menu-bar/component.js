@@ -43,6 +43,10 @@ rivets.binders['bottom-left'] = function(el, target) {
   el.style.top = bottom + 'px';
 };
 
+rivets.binders['fa-*'] = function(el, val) {
+  el.classList.toggle('fa-' + this.args[0], val);
+};
+
 rivets.components.menubar = {
   initialize: function(el, attrs) {
     return {
@@ -74,6 +78,7 @@ rivets.components.menubar = {
             rv-class-selected="menubar.current.index | eq index"
             rv-on-click="menubar.current.accept | args index"
             rv-on-mouseover="menubar.current.select | args index">
+            <i class="fa fa-fw" rv-fa-check="item.data.val | eq true"></i>
             { item.data.text }<span rv-after="item.data.cmd | keymap"></span>
           </li>
         </ul>
