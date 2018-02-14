@@ -33,6 +33,8 @@ const editorOptions = (function() {
   return editorOptions;
 })();
 
+CodeMirror.commands.save = onSave;
+
 var editor = CodeMirror(document.getElementById('editor'), editorOptions);
 
 const titlePattern = '%s - Greasemonkey User Script Editor';

@@ -1,5 +1,3 @@
-CodeMirror.commands.save = () => onSave();
-
 CodeMirror.commands.goToBracket = cm => {
   cm.extendSelectionsBy(range => {
     let next = cm.scanForBracket(range.head, 1);
