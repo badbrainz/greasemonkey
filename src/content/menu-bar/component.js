@@ -74,7 +74,7 @@ rivets.components.menubar = {
             rv-class-selected="menubar.current.index | eq index"
             rv-on-click="menubar.current.accept | args index"
             rv-on-mouseover="menubar.current.select | args index">
-            { item.text } <span>{ item.cmd | keymap }</span>
+            { item.data.text }<span rv-after="item.data.cmd | keymap"></span>
           </li>
         </ul>
       </div>`;

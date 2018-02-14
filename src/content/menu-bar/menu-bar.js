@@ -1,3 +1,19 @@
+class MenuItem {
+	constructor(action, data, meta = {}) {
+  	this.action = action;
+    this.data = data;
+    this.meta = meta;
+  }
+
+  accept() {
+    document.dispatchEvent(new CustomEvent(this.action, {
+      detail: this.data,
+      cancelable: true,
+      bubbles: true
+    }));
+  }
+}
+
 class Menu {
   constructor(name) {
     this.name = name;
@@ -6,9 +22,10 @@ class Menu {
     this.opened = false;
   }
 
-  addItem(str, exec) {
-    let [text, cmd, key] = str.split(':');
-    this.items.push({ text, cmd, key, exec });
+  addItem(action, data, meta) {
+    this.items.push(new MenuItem(action, data, meta));
+    return this;
+  }
     return this;
   }
 
@@ -22,12 +39,12 @@ class Menu {
   }
 
   selectByKey(key) {
-    this.index = this.items.findIndex(i => i.key == key);
+    this.index = this.items.findIndex(i => i.data.key == key);
   }
 
   accept(index) {
-    let item = this.items[index];
-    if (item && item.exec) item.exec();
+  	let item = this.items[index];
+    if (item) item.accept();
   }
 
   open() {

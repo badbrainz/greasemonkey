@@ -183,3 +183,20 @@ editor.on('optionChange', (cm, option) => {
     localStorage.editor = JSON.stringify(config);
   }
 });
+
+document.addEventListener('execCommand', event => {
+  editor.execCommand(event.detail.cmd);
+  if (event.detail.foc !== false) {
+    editor.focus();
+  }
+});
+
+document.addEventListener('setOption', event => {
+  let option = event.detail.opt;
+  let value = !event.detail.val;
+
+  editor.setOption(option, value);
+
+  // toggle model state
+  event.detail.val = value;
+});

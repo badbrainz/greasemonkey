@@ -1,34 +1,33 @@
 let menuBar = new MenuBar();
 
 menuBar.addMenu('File')
-  .addItem('Save:save:s', () => editor.execCommand('save'));
+  .addItem('execCommand', { text: 'Save', cmd: 'save', key: 's' })
+  .addItem('execCommand', { text: 'Next Document', cmd: 'viewNextDoc', key: 'n' })
+  .addItem('execCommand', { text: 'Previous Document', cmd: 'viewPreviousDoc', key: 'p' });
 
 menuBar.addMenu('Edit')
-  .addItem('Undo:undo:u', () => editor.execCommand('undo'))
-  .addItem('Redo:redo:r', () => editor.execCommand('redo'))
-  .addItem('Indent More:indentMore:]', () => editor.execCommand('indentMore'))
-  .addItem('Indent Less:indentLess:[', () => editor.execCommand('indentLess'))
-  .addItem('Indent Auto:indentAuto', () => editor.execCommand('indentAuto'))
-  .addItem('Jump to Line:jumpToLine:j', () => editor.execCommand('jumpToLine'))
-  .addItem('Fold:fold', () => editor.execCommand('fold'))
-  .addItem('Unfold:unfold', () => editor.execCommand('unfold'))
-  .addItem('Fold All:foldAll', () => editor.execCommand('foldAll'))
-  .addItem('Unfold All:unfoldAll', () => editor.execCommand('unfoldAll'));
-
-menuBar.addMenu('View')
-  .addItem('Next Document:viewNextDoc:n', () => editor.execCommand('viewNextDoc'))
-  .addItem('Previous Document:viewPreviousDoc:p', () => editor.execCommand('viewPreviousDoc'));
+  .addItem('execCommand', { text: 'Undo', cmd: 'undo', key: 'u' })
+  .addItem('execCommand', { text: 'Redo', cmd: 'redo', key: 'r' })
+  .addItem('execCommand', { text: 'Indent More', cmd: 'indentMore', key: ']' })
+  .addItem('execCommand', { text: 'Indent Less', cmd: 'indentLess', key: '[' })
+  .addItem('execCommand', { text: 'Indent Auto', cmd: 'indentAuto', key: 'i' })
+  .addItem('execCommand', { text: 'Jump to Line', cmd: 'jumpToLine', foc: false, key: 'j' })
+  .addItem('execCommand', { text: 'Fold', cmd: 'fold' })
+  .addItem('execCommand', { text: 'Unfold', cmd: 'unfold' })
+  .addItem('execCommand', { text: 'Fold All', cmd: 'foldAll' })
+  .addItem('execCommand', { text: 'Unfold All', cmd: 'unfoldAll' });
 
 menuBar.addMenu('Search')
-  .addItem('Find:find:f', () => editor.execCommand('find'))
-  .addItem('Find Next:findNext:n', () => editor.execCommand('findNext'))
-  .addItem('Find Previous:findPrev:p', () => editor.execCommand('findPrev'))
-  .addItem('Replace:replace:r', () => editor.execCommand('replace'))
-  .addItem('Replace All:replaceAll:a', () => editor.execCommand('replaceAll'));
+  .addItem('execCommand', { text: 'Find', cmd: 'find', foc: false, key: 'f' })
+  .addItem('execCommand', { text: 'Find Next', cmd: 'findNext', key: 'n' })
+  .addItem('execCommand', { text: 'Find Previous', cmd: 'findPrev', key: 'p' })
+  .addItem('execCommand', { text: 'Replace', cmd: 'replace', foc: false, key: 'r' })
+  .addItem('execCommand', { text: 'Replace All', cmd: 'replaceAll', foc: false, key: 'a' });
+
 
 menuBar.addMenu('Addons')
-  .addItem('Auto Complete:autocomplete:a', () => editor.execCommand('autocomplete'))
-  .addItem('Find Bracket:goToBracket:b', () => editor.execCommand('goToBracket'));
+  .addItem('execCommand', { text: 'Auto Complete', cmd: 'autocomplete' })
+  .addItem('execCommand', { text: 'Find Bracket', cmd: 'goToBracket' });
 
 rivets.bind(document.querySelector('menubar'), { menubar: menuBar });
 
