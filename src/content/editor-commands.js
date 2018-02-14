@@ -1,6 +1,4 @@
-CodeMirror.commands.save = cm => {
-    onSave();
-};
+CodeMirror.commands.save = () => onSave();
 
 CodeMirror.commands.goToBracket = cm => {
   cm.extendSelectionsBy(range => {

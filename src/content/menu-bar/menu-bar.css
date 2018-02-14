@@ -31,7 +31,6 @@ menubar button, menubar ul {
   z-index: 1;
 }
 
-
 /* Custom styles */
 
 menubar {
@@ -45,7 +44,7 @@ menubar button {
   background: transparent;
 }
 menubar ul {
-  min-width: 150px;
+  min-width: 180px;
   padding: 4px 0;
   background-color: white;
   box-shadow: 0 0 0 1px rgba(0, 0, 0, .15), 0 2px 4px rgba(0, 0, 0, .5);
@@ -64,11 +63,11 @@ menubar button, menubar li {
   line-height: 1.8;
   padding: 0 8px;
 }
-menubar :focus {
+menubar *:focus {
   outline: none;
 }
 menubar button.focused {
-  background: rgba(0,0,0,.15);
+  background: rgba(0, 0, 0, .15);
 }
 menubar li span {
   flex: 1;
