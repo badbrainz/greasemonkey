@@ -32,22 +32,10 @@ menuBar.addMenu('Addons')
 
 rivets.bind(document.querySelector('menubar'), { menubar: menuBar });
 
-{
-  let isMac = CodeMirror.keyMap['default'] == CodeMirror.keyMap.macDefault;
-  let ctrl = isMac ? 'Cmd-' : 'Ctrl-';
-  let extraKeys = {};
-  extraKeys[ctrl + '0'] = 'fold';
-  extraKeys[ctrl + '9'] = 'unfold';
-  extraKeys[ctrl + 'M'] = 'goToBracket';
-  extraKeys[ctrl + 'Space'] = 'autocomplete';
-  extraKeys['Shift-' + ctrl + '0'] = 'foldAll';
-  extraKeys['Shift-' + ctrl + '9'] = 'unfoldAll';
-  extraKeys['Shift-' + ctrl + ']'] = 'viewNextDoc';
-  extraKeys['Shift-' + ctrl + '['] = 'viewPreviousDoc';
-  extraKeys['Alt-F'] = () => menuBar.showMenu('File');
-  extraKeys['Alt-E'] = () => menuBar.showMenu('Edit');
-  extraKeys['Alt-V'] = () => menuBar.showMenu('View');
-  extraKeys['Alt-S'] = () => menuBar.showMenu('Search');
-  extraKeys['Alt-A'] = () => menuBar.showMenu('Addons');
-  editor.setOption('extraKeys', extraKeys);
-}
+editor.setOption('extraKeys',
+	Object.assign({}, editor.getOption('extraKeys'), {
+    ['Alt-F']: () => menuBar.showMenu('File'),
+    ['Alt-E']: () => menuBar.showMenu('Edit'),
+    ['Alt-S']: () => menuBar.showMenu('Search'),
+    ['Alt-A']: () => menuBar.showMenu('Addons')
+  }));

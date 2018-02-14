@@ -2,12 +2,24 @@
 // TODO: Put name in title.
 
 const editorOptions = (function() {
+  let isMac = CodeMirror.keyMap['default'] == CodeMirror.keyMap.macDefault;
+  let ctrl = isMac ? 'Cmd-' : 'Ctrl-';
+
   let editorOptions = {
     'tabSize': 2,
     'lineNumbers': true,
     'lint': true,
     'gutters': [],
-    'matchBrackets': false
+    'extraKeys': {
+      [ctrl + '0']: 'fold',
+      [ctrl + '9']: 'unfold',
+      [ctrl + 'M']: 'goToBracket',
+      [ctrl + 'Space']: 'autocomplete',
+      ['Shift-' + ctrl + '0']: 'foldAll',
+      ['Shift-' + ctrl + '9']: 'unfoldAll',
+      ['Shift-' + ctrl + ']']: 'viewNextDoc',
+      ['Shift-' + ctrl + '[']: 'viewPreviousDoc'
+    }
   };
 
   if (localStorage.hasOwnProperty('editor')) {
