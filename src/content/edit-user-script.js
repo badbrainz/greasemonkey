@@ -173,7 +173,7 @@ editor.on('swapDoc', doc => {
 
 editor.on('optionChange', (cm, option) => {
   let optionalKeys = [
-    'lineWrapping', 'indentWithTabs', 'indentUnit', 'lint', 'matchBrackets'];
+    'lineNumbers', 'lineWrapping', 'matchBrackets', 'lint'];
 
   if (optionalKeys.includes(option)) {
     let config = {};
