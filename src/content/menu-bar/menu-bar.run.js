@@ -2,16 +2,20 @@ let menuBar = new MenuBar();
 
 menuBar.addMenu('File')
   .addItem('execCommand', { text: 'Save', cmd: 'save', key: 's' })
+  .addDivider()
   .addItem('execCommand', { text: 'Next Document', cmd: 'viewNextDoc', key: 'n' })
   .addItem('execCommand', { text: 'Previous Document', cmd: 'viewPreviousDoc', key: 'p' });
 
 menuBar.addMenu('Edit')
   .addItem('execCommand', { text: 'Undo', cmd: 'undo', key: 'u' })
   .addItem('execCommand', { text: 'Redo', cmd: 'redo', key: 'r' })
+  .addDivider()
   .addItem('execCommand', { text: 'Indent More', cmd: 'indentMore', key: ']' })
   .addItem('execCommand', { text: 'Indent Less', cmd: 'indentLess', key: '[' })
   .addItem('execCommand', { text: 'Indent Auto', cmd: 'indentAuto', key: 'i' })
+  .addDivider()
   .addItem('execCommand', { text: 'Jump to Line', cmd: 'jumpToLine', foc: false, key: 'j' })
+  .addDivider()
   .addItem('execCommand', { text: 'Fold', cmd: 'fold' })
   .addItem('execCommand', { text: 'Unfold', cmd: 'unfold' })
   .addItem('execCommand', { text: 'Fold All', cmd: 'foldAll' })
@@ -21,6 +25,7 @@ menuBar.addMenu('Search')
   .addItem('execCommand', { text: 'Find', cmd: 'find', foc: false, key: 'f' })
   .addItem('execCommand', { text: 'Find Next', cmd: 'findNext', key: 'n' })
   .addItem('execCommand', { text: 'Find Previous', cmd: 'findPrev', key: 'p' })
+  .addDivider()
   .addItem('execCommand', { text: 'Replace', cmd: 'replace', foc: false, key: 'r' })
   .addItem('execCommand', { text: 'Replace All', cmd: 'replaceAll', foc: false, key: 'a' });
 

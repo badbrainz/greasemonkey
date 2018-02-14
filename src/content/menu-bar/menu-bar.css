@@ -55,6 +55,7 @@ menubar li {
   align-items: center;
   justify-content: space-between;
   text-transform: capitalize;
+  position: relative;
 }
 menubar li.selected {
   background: rgba(33, 150, 243, .25);
@@ -80,4 +81,16 @@ menubar li span::after {
 }
 menubar li .fa {
   margin-right: 4px;
+}
+menubar li.divider {
+  margin-bottom: 5px;
+}
+menubar li.divider::after {
+  content: '';
+  background: lightgrey;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -3px;
+  height: 1px;
 }

@@ -77,7 +77,8 @@ rivets.components.menubar = {
             rv-each-item="menubar.current.items"
             rv-class-selected="menubar.current.index | eq index"
             rv-on-click="menubar.current.accept | args index"
-            rv-on-mouseover="menubar.current.select | args index">
+            rv-on-mouseover="menubar.current.select | args index"
+            rv-class-divider="item.meta.type | eq 'divider'">
             <i class="fa fa-fw" rv-fa-check="item.data.val | eq true"></i>
             { item.data.text }<span rv-after="item.data.cmd | keymap"></span>
           </li>

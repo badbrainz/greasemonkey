@@ -26,6 +26,10 @@ class Menu {
     this.items.push(new MenuItem(action, data, meta));
     return this;
   }
+
+  addDivider() {
+    let last = this.items[this.items.length - 1];
+    if (last) last.meta.type = 'divider';
     return this;
   }
 
