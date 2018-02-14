@@ -2,14 +2,6 @@ CodeMirror.commands.save = cm => {
     onSave();
 };
 
-CodeMirror.commands.increaseFontSize = cm => {
-  cm.setOption('fontSize', cm.getOption('fontSize') + 1);
-};
-
-CodeMirror.commands.decreaseFontSize = cm => {
-  cm.setOption('fontSize', cm.getOption('fontSize') - 1);
-};
-
 CodeMirror.commands.goToBracket = cm => {
   cm.extendSelectionsBy(range => {
     let next = cm.scanForBracket(range.head, 1);
@@ -22,7 +14,7 @@ CodeMirror.commands.goToBracket = cm => {
 CodeMirror.commands.autocomplete = cm => {
   cm.showHint({
     'hint': (cm, options) => {
-      if (cm.getOption('autocomplete') && CodeMirror.hint.anyword) {
+      if (CodeMirror.hint.anyword) {
         return CodeMirror.hint.anyword(cm, options);
       }
     },

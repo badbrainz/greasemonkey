@@ -5,11 +5,9 @@ const editorOptions = (function() {
   let editorOptions = {
     'tabSize': 2,
     'lineNumbers': true,
-    'fontSize': 11,
     'lint': true,
     'gutters': [],
-    'matchBrackets': false,
-    'autocomplete': false
+    'matchBrackets': false
   };
 
   if (localStorage.hasOwnProperty('editor')) {
@@ -163,8 +161,7 @@ editor.on('swapDoc', doc => {
 
 editor.on('optionChange', (cm, option) => {
   let optionalKeys = [
-    'fontSize', 'lineWrapping', 'indentWithTabs', 'indentUnit', 'lint',
-    'matchBrackets', 'autocomplete'];
+    'lineWrapping', 'indentWithTabs', 'indentUnit', 'lint', 'matchBrackets'];
 
   if (optionalKeys.includes(option)) {
     let config = {};
@@ -193,8 +190,6 @@ menuBar.addMenu('Edit')
   .addItem('Unfold All:unfoldAll', () => editor.execCommand('unfoldAll'));
 
 menuBar.addMenu('View')
-  .addItem('Font Size +:increaseFontSize:i', () => editor.execCommand('increaseFontSize'))
-  .addItem('Font Size -:decreaseFontSize:d', () => editor.execCommand('decreaseFontSize'))
   .addItem('Next Document:viewNextDoc:n', () => editor.execCommand('viewNextDoc'))
   .addItem('Previous Document:viewPreviousDoc:p', () => editor.execCommand('viewPreviousDoc'));
 
@@ -215,8 +210,6 @@ rivets.bind(document.querySelector('menubar'), { menubar: menuBar });
   let isMac = CodeMirror.keyMap['default'] == CodeMirror.keyMap.macDefault;
   let ctrl = isMac ? 'Cmd-' : 'Ctrl-';
   let extraKeys = {};
-  extraKeys[ctrl + "'"] = 'increaseFontSize';
-  extraKeys[ctrl + ';'] = 'decreaseFontSize';
   extraKeys[ctrl + '0'] = 'fold';
   extraKeys[ctrl + '9'] = 'unfold';
   extraKeys[ctrl + 'M'] = 'goToBracket';
