@@ -186,15 +186,45 @@ editor.on('optionChange', (cm, option) => {
   }
 });
 
+///////////////////////////////////////////////////////////////////////////////
+
+let gMenuBar = new MenuBar();
+let gMenuActions = {
+  'cm_save': { oper: 'save' },
+  'cm_viewNextDoc': { oper: 'viewNextDoc' },
+  'cm_viewPreviousDoc': { oper: 'viewPreviousDoc' },
+  'cm_undo': { oper: 'undo' },
+  'cm_redo': { oper: 'redo' },
+  'cm_indentMore': { oper: 'indentMore' },
+  'cm_indentLess': { oper: 'indentLess' },
+  'cm_indentAuto': { oper: 'indentAuto' },
+  'cm_jumpToLine': { oper: 'jumpToLine', foc: false },
+  'cm_fold': { oper: 'fold' },
+  'cm_unfold': { oper: 'unfold' },
+  'cm_foldAll': { oper: 'foldAll' },
+  'cm_unfoldAll': { oper: 'unfoldAll' },
+  'cm_find': { oper: 'find', foc: false },
+  'cm_findNext': { oper: 'findNext' },
+  'cm_findPrev': { oper: 'findPrev' },
+  'cm_replace': { oper: 'replace', foc: false },
+  'cm_replaceAll': { oper: 'replaceAll', foc: false },
+  'cm_autocomplete': { oper: 'autocomplete' },
+  'cm_goToBracket': { oper: 'goToBracket' },
+  'op_lineNumbers': { oper: 'lineNumbers' },
+  'op_lineWrapping': { oper: 'lineWrapping' },
+  'op_matchBrackets': { oper: 'matchBrackets' },
+  'op_lint': { oper: 'lint' }
+};
+
 document.addEventListener('execCommand', event => {
-  editor.execCommand(event.detail.cmd);
+  editor.execCommand(event.detail.oper);
   if (event.detail.foc !== false) {
     editor.focus();
   }
 });
 
 document.addEventListener('setOption', event => {
-  let option = event.detail.opt;
+  let option = event.detail.oper;
   let value = !event.detail.val;
 
   if (option == 'lint') {
@@ -213,6 +243,79 @@ document.addEventListener('setOption', event => {
 
   editor.setOption(option, value);
 
-  // toggle model state
-  event.detail.val = value;
+  let model = gMenuActions['op_' + option];
+  if (model) model.val = value;
 });
+
+///////////////////////////////////////////////////////////////////////////////
+
+gMenuActions.cm_save.text = 'Save';
+gMenuActions.cm_viewNextDoc.text = 'Next Document';
+gMenuActions.cm_viewPreviousDoc.text = 'Previous Document';
+gMenuActions.cm_undo.text = 'Undo';
+gMenuActions.cm_redo.text = 'Redo';
+gMenuActions.cm_indentMore.text = 'Indent More';
+gMenuActions.cm_indentLess.text = 'Indent Less';
+gMenuActions.cm_indentAuto.text = 'Indent Auto';
+gMenuActions.cm_jumpToLine.text = 'Jump To Line';
+gMenuActions.cm_fold.text = 'Fold';
+gMenuActions.cm_unfold.text = 'Unfold';
+gMenuActions.cm_foldAll.text = 'Fold All';
+gMenuActions.cm_unfoldAll.text = 'Unfold All';
+gMenuActions.cm_find.text = 'Find';
+gMenuActions.cm_findNext.text = 'Find Next'
+gMenuActions.cm_findPrev.text = 'Find Previous';
+gMenuActions.cm_replace.text = 'Replace';
+gMenuActions.cm_replaceAll.text = 'Replace All';
+gMenuActions.cm_autocomplete.text = 'Autocomplete';
+gMenuActions.cm_goToBracket.text = 'Go To Bracket';
+gMenuActions.op_lineNumbers.text = 'Line Numbers';
+gMenuActions.op_lineWrapping.text = 'Wrap Lines';
+gMenuActions.op_matchBrackets.text = 'Highlight Brackets';
+gMenuActions.op_lint.text = 'Lint Metadata';
+
+gMenuActions.op_lineNumbers.val = editor.getOption('lineNumbers');
+gMenuActions.op_lineWrapping.val = editor.getOption('lineWrapping');
+gMenuActions.op_matchBrackets.val = editor.getOption('matchBrackets');
+gMenuActions.op_lint.val = editor.getOption('lint');
+
+gMenuBar.addMenu('File')
+  .addItem('execCommand', gMenuActions.cm_save)
+  .addDivider()
+  .addItem('execCommand', gMenuActions.cm_viewNextDoc)
+  .addItem('execCommand', gMenuActions.cm_viewPreviousDoc);
+
+gMenuBar.addMenu('Edit')
+  .addItem('execCommand', gMenuActions.cm_undo)
+  .addItem('execCommand', gMenuActions.cm_redo)
+  .addDivider()
+  .addItem('execCommand', gMenuActions.cm_indentMore)
+  .addItem('execCommand', gMenuActions.cm_indentLess)
+  .addItem('execCommand', gMenuActions.cm_indentAuto)
+  .addDivider()
+  .addItem('execCommand', gMenuActions.cm_jumpToLine)
+  .addDivider()
+  .addItem('execCommand', gMenuActions.cm_fold)
+  .addItem('execCommand', gMenuActions.cm_unfold)
+  .addItem('execCommand', gMenuActions.cm_foldAll)
+  .addItem('execCommand', gMenuActions.cm_unfoldAll);
+
+gMenuBar.addMenu('Search')
+  .addItem('execCommand', gMenuActions.cm_find)
+  .addItem('execCommand', gMenuActions.cm_findNext)
+  .addItem('execCommand', gMenuActions.cm_findPrev)
+  .addDivider()
+  .addItem('execCommand', gMenuActions.cm_replace)
+  .addItem('execCommand', gMenuActions.cm_replaceAll);
+
+gMenuBar.addMenu('Options')
+  .addItem('setOption', gMenuActions.op_lineNumbers)
+  .addItem('setOption', gMenuActions.op_lineWrapping)
+  .addItem('setOption', gMenuActions.op_matchBrackets)
+  .addItem('setOption', gMenuActions.op_lint);
+
+gMenuBar.addMenu('Addons')
+  .addItem('execCommand', gMenuActions.cm_autocomplete)
+  .addItem('execCommand', gMenuActions.cm_goToBracket);
+
+rivets.bind(document.querySelector('menubar'), { menubar: gMenuBar });
