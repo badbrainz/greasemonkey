@@ -239,26 +239,26 @@ document.addEventListener('setOption', event => {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-gMenuActions.cm_save.text = 'Save';
-gMenuActions.cm_viewNextDoc.text = 'Next Document';
-gMenuActions.cm_viewPreviousDoc.text = 'Previous Document';
-gMenuActions.cm_undo.text = 'Undo';
-gMenuActions.cm_redo.text = 'Redo';
-gMenuActions.cm_indentMore.text = 'Indent More';
-gMenuActions.cm_indentLess.text = 'Indent Less';
-gMenuActions.cm_indentAuto.text = 'Indent Auto';
-gMenuActions.cm_jumpToLine.text = 'Jump To Line';
+gMenuActions.cm_save.text = '&Save';
+gMenuActions.cm_viewNextDoc.text = '&Next Document';
+gMenuActions.cm_viewPreviousDoc.text = '&Previous Document';
+gMenuActions.cm_undo.text = '&Undo';
+gMenuActions.cm_redo.text = '&Redo';
+gMenuActions.cm_indentMore.text = 'Indent &More';
+gMenuActions.cm_indentLess.text = 'Indent &Less';
+gMenuActions.cm_indentAuto.text = 'Indent &Auto';
+gMenuActions.cm_jumpToLine.text = '&Jump To Line';
 gMenuActions.cm_fold.text = 'Fold';
 gMenuActions.cm_unfold.text = 'Unfold';
 gMenuActions.cm_foldAll.text = 'Fold All';
 gMenuActions.cm_unfoldAll.text = 'Unfold All';
-gMenuActions.cm_find.text = 'Find';
-gMenuActions.cm_findNext.text = 'Find Next'
-gMenuActions.cm_findPrev.text = 'Find Previous';
-gMenuActions.cm_replace.text = 'Replace';
-gMenuActions.cm_replaceAll.text = 'Replace All';
-gMenuActions.cm_autocomplete.text = 'Autocomplete';
-gMenuActions.cm_goToBracket.text = 'Go To Bracket';
+gMenuActions.cm_find.text = '&Find';
+gMenuActions.cm_findNext.text = 'Find &Next'
+gMenuActions.cm_findPrev.text = 'Find &Previous';
+gMenuActions.cm_replace.text = '&Replace';
+gMenuActions.cm_replaceAll.text = 'Replace &All';
+gMenuActions.cm_autocomplete.text = '&Autocomplete';
+gMenuActions.cm_goToBracket.text = 'Go To &Bracket';
 gMenuActions.op_lineNumbers.text = 'Line Numbers';
 gMenuActions.op_lineWrapping.text = 'Wrap Lines';
 gMenuActions.op_matchBrackets.text = 'Highlight Brackets';
@@ -267,6 +267,8 @@ gMenuActions.op_lint.text = 'Lint Metadata';
 for (let key in gMenuActions) {
   if ('cm_' != key.slice(0, 3)) continue;
   gMenuActions[key].keymap = editor.lookupCommandKey(gMenuActions[key].oper);
+  let val = localStorage.getItem(key);
+  if (val) gMenuActions[key].text = JSON.parse(val);
 }
 
 gMenuActions.op_lineNumbers.val = editor.getOption('lineNumbers');

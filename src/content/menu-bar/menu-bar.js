@@ -43,7 +43,12 @@ class Menu {
   }
 
   selectByKey(key) {
-    this.index = this.items.findIndex(i => i.data.key == key);
+    this.index = this.items.findIndex(i => {
+      let index = i.data.text.indexOf('&');
+      if (index != -1) {
+        return i.data.text[index + 1].toLowerCase() == key;
+      }
+    });
   }
 
   accept(index) {

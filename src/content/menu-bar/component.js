@@ -19,6 +19,16 @@ rivets.binders.focus = function(el, value) {
   else el.blur();
 };
 
+rivets.formatters.menuitem = function(str) {
+  let match = str && str.match(/&[^\s]/i);
+  if (match) {
+    return str.slice(0, match.index)
+      + `<u>${str[match.index + 1]}</u>`
+      + str.slice(match.index + 2);
+  }
+  return str;
+};
+
 rivets.binders['bottom-left'] = function(el, target) {
   let { left, bottom } = target.getBoundingClientRect();
   el.style.left = left + 'px';
@@ -62,7 +72,7 @@ rivets.components.menubar = {
             rv-on-mouseover="menubar.current.select | args index"
             rv-class-divider="item.meta.type | eq 'divider'">
             <i class="fa fa-fw" rv-fa-check="item.data.val | eq true"></i>
-            { item.data.text }
+            <span rv-html="item.data.text | menuitem"></span>
             <span class="keymap" rv-after="item.data.keymap"></span>
           </li>
         </ul>

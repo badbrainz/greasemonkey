@@ -37,6 +37,7 @@ menubar {
   cursor: default;
   font-family: arial, sans-serif;
   font-size: 13px;
+  user-select: none;
 }
 menubar button {
   border: none;
@@ -53,7 +54,6 @@ menubar li {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  text-transform: capitalize;
   position: relative;
 }
 menubar li.selected {
