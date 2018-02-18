@@ -173,21 +173,6 @@ editor.on('swapDoc', doc => {
   doc.performLint();
 });
 
-editor.on('optionChange', (cm, option) => {
-  let optionalKeys = [
-    'lineNumbers', 'lineWrapping', 'matchBrackets', 'lint'];
-
-  if (optionalKeys.includes(option)) {
-    let config = {};
-    optionalKeys.forEach(k => {
-      config[k] = editor.getOption(k);
-    });
-    localStorage.editor = JSON.stringify(config);
-  }
-});
-
-///////////////////////////////////////////////////////////////////////////////
-
 let gMenuBar = new MenuBar();
 let gMenuActions = {
   'cm_save': { oper: 'save' },
@@ -235,6 +220,8 @@ document.addEventListener('setOption', event => {
 
   let model = gMenuActions['op_' + option];
   if (model) model.val = value;
+
+  localStorage.setItem('op_' + option, JSON.stringify(value));
 });
 
 ///////////////////////////////////////////////////////////////////////////////
