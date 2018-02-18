@@ -1,21 +1,3 @@
-function lookupCommandKey(cmd, map) {
-  let key = Object.keys(map).find(k => map[k] == cmd);
-  if (key) return key;
-  if (map.fallthrough)
-    return lookupCommandKey(cmd, CodeMirror.keyMap[map.fallthrough]);
-  return '';
-}
-
-rivets.formatters.keymap = function(cmd) {
-  let map = editor.getOption('extraKeys');
-  let key = map && lookupCommandKey(cmd, map);
-  if (!key) {
-    map = CodeMirror.keyMap[editor.getOption('keyMap')];
-    key = lookupCommandKey(cmd, map);
-  }
-  return key;
-};
-
 rivets.formatters.args = function(fn, ...args) {
   return () => fn.apply(this, args);
 };
@@ -80,7 +62,8 @@ rivets.components.menubar = {
             rv-on-mouseover="menubar.current.select | args index"
             rv-class-divider="item.meta.type | eq 'divider'">
             <i class="fa fa-fw" rv-fa-check="item.data.val | eq true"></i>
-            { item.data.text }<span rv-after="item.data.cmd | keymap"></span>
+            { item.data.text }
+            <span class="keymap" rv-after="item.data.keymap"></span>
           </li>
         </ul>
       </div>`;

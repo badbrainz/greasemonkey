@@ -69,12 +69,12 @@ menubar *:focus {
 menubar button.focused {
   background: rgba(0, 0, 0, .15);
 }
-menubar li span {
+menubar li .keymap {
   flex: 1;
   text-align: end;
   margin-left: 1em;
 }
-menubar li span::after {
+menubar li .keymap::after {
   content: attr(after);
   color: grey;
 }

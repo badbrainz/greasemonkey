@@ -274,6 +274,11 @@ gMenuActions.op_lineWrapping.text = 'Wrap Lines';
 gMenuActions.op_matchBrackets.text = 'Highlight Brackets';
 gMenuActions.op_lint.text = 'Lint Metadata';
 
+for (let key in gMenuActions) {
+  if ('cm_' != key.slice(0, 3)) continue;
+  gMenuActions[key].keymap = editor.lookupCommandKey(gMenuActions[key].oper);
+}
+
 gMenuActions.op_lineNumbers.val = editor.getOption('lineNumbers');
 gMenuActions.op_lineWrapping.val = editor.getOption('lineWrapping');
 gMenuActions.op_matchBrackets.val = editor.getOption('matchBrackets');
