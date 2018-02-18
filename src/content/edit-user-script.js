@@ -1,37 +1,23 @@
 // TODO: Search, replace.
 // TODO: Put name in title.
 
-const editorOptions = (function() {
-  let isMac = CodeMirror.keyMap['default'] == CodeMirror.keyMap.macDefault;
-  let ctrl = isMac ? 'Cmd-' : 'Ctrl-';
+var editorOptions = {
+  'tabSize': 2,
+  'lineNumbers': true,
+  'lineWrapping': false,
+  'matchBrackets': false,
+  'lint': true
+};
 
-  let editorOptions = {
-    'tabSize': 2,
-    'lineNumbers': true,
-    'lint': true,
-    'gutters': [],
-    'extraKeys': {
-      [ctrl + '0']: 'fold',
-      [ctrl + '9']: 'unfold',
-      [ctrl + 'M']: 'goToBracket',
-      [ctrl + 'Space']: 'autocomplete',
-      ['Shift-' + ctrl + '0']: 'foldAll',
-      ['Shift-' + ctrl + '9']: 'unfoldAll',
-      ['Shift-' + ctrl + ']']: 'viewNextDoc',
-      ['Shift-' + ctrl + '[']: 'viewPreviousDoc'
-    }
-  };
+for (let s in editorOptions) {
+  let val = localStorage.getItem('op_' + s);
+  if (val) editorOptions[s] = JSON.parse(val);
+}
 
-  if (localStorage.hasOwnProperty('editor')) {
-    Object.assign(editorOptions, JSON.parse(localStorage.editor));
-  }
-
-  if (editorOptions.lint) {
-    editorOptions.gutters.push('CodeMirror-lint-markers');
-  }
-
-  return editorOptions;
-})();
+if (editorOptions.lint) {
+  editorOptions.gutters = [];
+  editorOptions.gutters.push('CodeMirror-lint-markers');
+}
 
 CodeMirror.commands.save = onSave;
 
@@ -167,11 +153,11 @@ function onSave() {
   }
 }
 
-///////////////////////////////////////////////////////////////////////////////
-
 editor.on('swapDoc', doc => {
   doc.performLint();
 });
+
+///////////////////////////////////////////////////////////////////////////////
 
 let gMenuBar = new MenuBar();
 let gMenuActions = {
@@ -200,6 +186,33 @@ let gMenuActions = {
   'op_matchBrackets': { oper: 'matchBrackets' },
   'op_lint': { oper: 'lint' }
 };
+
+///////////////////////////////////////////////////////////////////////////////
+
+{
+  let isMac = CodeMirror.keyMap['default'] == CodeMirror.keyMap.macDefault;
+  let ctrl = isMac ? 'Cmd-' : 'Ctrl-';
+
+  let extraKeys = Object.assign({}, editor.getOption('extraKeys'), {
+    [ctrl + '0']: 'fold',
+    [ctrl + '9']: 'unfold',
+    [ctrl + 'M']: 'goToBracket',
+    [ctrl + 'Space']: 'autocomplete',
+    ['Shift-' + ctrl + '0']: 'foldAll',
+    ['Shift-' + ctrl + '9']: 'unfoldAll',
+    ['Shift-' + ctrl + ']']: 'viewNextDoc',
+    ['Shift-' + ctrl + '[']: 'viewPreviousDoc',
+    ['Alt-F']: () => gMenuBar.showMenu('File'),
+    ['Alt-E']: () => gMenuBar.showMenu('Edit'),
+    ['Alt-S']: () => gMenuBar.showMenu('Search'),
+    ['Alt-O']: () => gMenuBar.showMenu('Options'),
+    ['Alt-A']: () => gMenuBar.showMenu('Addons')
+  });
+
+  editor.setOption('extraKeys', extraKeys);
+}
+
+///////////////////////////////////////////////////////////////////////////////
 
 document.addEventListener('execCommand', event => {
   editor.execCommand(event.detail.oper);
