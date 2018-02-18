@@ -15,3 +15,14 @@ CodeMirror.defineExtension('lookupCommandKey', function(cmd) {
     CodeMirror.keyMap[this.getOption('keyMap')]);
 });
 
+CodeMirror.defineExtension('toggleLintGutter', function(lint) {
+  let gutters = this.getOption('gutters');
+  let found = gutters.indexOf('CodeMirror-lint-markers');
+  if (found == -1 && lint) {
+    gutters = ['CodeMirror-lint-markers'].concat(gutters);
+  } else if (found > -1 && !lint) {
+    gutters = gutters.slice(0);
+    gutters.splice(found, 1);
+  }
+  this.setOption('gutters', gutters);
+});

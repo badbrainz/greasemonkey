@@ -228,17 +228,7 @@ document.addEventListener('setOption', event => {
   let value = !event.detail.val;
 
   if (option == 'lint') {
-    let gutters = editor.getOption('gutters');
-
-    let found = gutters.indexOf('CodeMirror-lint-markers');
-    if (found == -1 && value) {
-      gutters = ['CodeMirror-lint-markers'].concat(gutters);
-    } else if (found > -1 && !value) {
-      gutters = gutters.slice(0);
-      gutters.splice(found, 1);
-    }
-
-    editor.setOption('gutters', gutters);
+    editor.toggleLintGutter(value);
   }
 
   editor.setOption(option, value);
