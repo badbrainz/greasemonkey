@@ -107,11 +107,14 @@ editor.on('change', () => {
 
 
 editor.on('swapDoc', doc => {
-  if (doc.getMode().name == 'javascript') {
-    doc.setOption('gutters', ['CodeMirror-lint-markers']);
-    doc.setOption('lint', true);
-    doc.performLint();
+  let isScript = editor.getMode().name == 'userscript';
+  let gutterName = 'CodeMirror-lint-markers';
+  let gutters = editor.getOption('gutters').filter(s => s != gutterName);
+  if (isScript) {
+    gutters.unshift(gutterName);
   }
+  editor.setOption('gutters', gutters);
+  editor.setOption('lint', isScript);
 });
 
 
