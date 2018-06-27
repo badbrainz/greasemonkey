@@ -7,6 +7,21 @@ const editor = CodeMirror(
     {
       'tabSize': 2,
       'lineNumbers': true,
+      'extraKeys': {
+        'Ctrl-Space': 'autocomplete'
+      },
+      'hintOptions': {
+        'metaKeywords': ('description include exclude grant icon match name ' +
+                         'namespace noframes require resource run-at ' +
+                         'version').split(' '),
+        'metaVariables': {
+           'run-at': 'start end idle'.split(' ').map(s => 'document-' + s),
+           'grant': ('deleteValue getValue listValues setValue ' +
+                     'getResourceUrl notification openInTab setClipboard ' +
+                     'xmlHttpRequest').split(' ')
+                     .map(s => 'GM.' + s).concat('unsafeWindow', 'none')
+         }
+      }
     });
 
 CodeMirror.commands.save = onSave;
