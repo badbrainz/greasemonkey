@@ -63,7 +63,7 @@ chrome.runtime.sendMessage({
   scriptTab.textContent = userScript.name;
   tabs.appendChild(scriptTab);
   editorTabs.push(scriptTab);
-  editorDocs.push(CodeMirror.Doc(userScript.content, 'javascript'));
+  editorDocs.push(CodeMirror.Doc(userScript.content, 'userscript'));
   editorUrls.push(null);
 
   Object.keys(userScript.requiresContent).forEach(u => {
