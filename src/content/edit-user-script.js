@@ -11,16 +11,7 @@ const editor = CodeMirror(
         'Ctrl-Space': 'autocomplete'
       },
       'hintOptions': {
-        'metaKeywords': ('description include exclude grant icon match name ' +
-                         'namespace noframes require resource run-at ' +
-                         'version').split(' '),
-        'metaVariables': {
-           'run-at': 'start end idle'.split(' ').map(s => 'document-' + s),
-           'grant': ('deleteValue getValue listValues setValue ' +
-                     'getResourceUrl notification openInTab setClipboard ' +
-                     'xmlHttpRequest').split(' ')
-                     .map(s => 'GM.' + s).concat('unsafeWindow', 'none')
-         }
+        'completeSingle': false
       }
     });
 
@@ -238,3 +229,34 @@ function onSaveComplete(savedDetails) {
     }
   });
 }
+
+window.fetch('./cm-addons/snippets/gm-api.xml').then(async (res) => {
+  if (res.ok) {
+    const xml = (new DOMParser()).parseFromString(await res.text(), 'text/xml');
+    if (xml.documentElement.nodeName == 'parsererror') return;
+
+    const getCdata = (node) => {
+      let value = '';
+      for (let { nodeType, nodeValue } of node.childNodes) {
+        if (nodeType == xml.TEXT_NODE || nodeType == xml.CDATA_SECTION_NODE) {
+          value += nodeValue;
+        }
+      }
+      return value;
+    };
+
+    const snippets = [];
+    for (const child of xml.getElementsByTagName('snippet')) {
+      const cdata = getCdata(child).trim();
+      if (cdata) snippets.push({
+        prefix: child.getAttribute('prefix'),
+        name: child.getAttribute('name'),
+        data: cdata
+      });
+    }
+
+    editor.setOption('snippets', snippets);
+  }
+});
+
+editor.on('inputRead', () => editor.execCommand('autocomplete'));

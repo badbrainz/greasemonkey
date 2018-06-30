@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<snippets>
+
+<snippet name="Metadata Block" prefix="meta">
+<![CDATA[
+// ==UserScript==
+// @name            ${1:Script Name}
+// @description     ${2:Add a description.}
+// @version         1
+// @grant           none
+// ==/UserScript==
+$3
+]]>
+</snippet>
+
+<snippet name="GM.deleteValue" prefix="gmdel">
+<![CDATA[
+GM.deleteValue("${1:name}").then(function() {
+  $2
+\});
+]]>
+</snippet>
+
+<snippet name="GM.getValue" prefix="gmget">
+<![CDATA[
+GM.getValue("${1:name}").then(function(${2:value}) {
+  $3
+\});
+]]>
+</snippet>
+
+<snippet name="GM.listValues" prefix="gmlist">
+<![CDATA[
+GM.listValues().then(function(${1:names}) {
+  $2
+\});
+]]>
+</snippet>
+
+<snippet name="GM.setValue" prefix="gmset">
+<![CDATA[
+GM.setValue("${1:name}", ${2:value}).then(function() {
+  $3
+\});
+]]>
+</snippet>
+
+<snippet name="GM.openInTab" prefix="gmopen">
+<![CDATA[
+GM.openInTab(${1:url}).then(function() {
+  $2
+\});
+]]>
+</snippet>
+
+<snippet name="GM.setClipboard" prefix="gmclip">
+<![CDATA[
+GM.setClipboard("${1:text}").then(function() {
+  $2
+\});
+]]>
+</snippet>
+
+<snippet name="GM.xmlHttpRequest" prefix="gmxml">
+<![CDATA[
+GM.xmlhttpRequest(${1:request}).then(function(${2:response}) {
+  $3
+\});
+]]>
+</snippet>
+
+</snippets>
