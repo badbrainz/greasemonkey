@@ -64,6 +64,7 @@
     "clipboardWrite",
     "cookies",
     "downloads",
+    "nativeMessaging",
     "notifications",
     "storage",
     "tabs",
