@@ -52,6 +52,9 @@
       "/third-party/MatchPattern.js",
       "/third-party/jszip/jszip.min.js",
 
+      "/src/util/greasy-host.js",
+      "/src/bg/on-open-native-app.js",
+
       "/src/bg/execute.run.js",
       "/src/bg/user-script-detect.run.js",
       "/src/bg/user-script-registry.run.js",

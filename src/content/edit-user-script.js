@@ -220,13 +220,3 @@ function onSaveComplete(savedDetails) {
     }
   });
 }
-
-document.getElementById('external').addEventListener('click', () => {
-  let fileName = `${gUserScript.uuid}.user.js`
-  externalEditor.postMessage(editor.getValue(), {
-    cmd: 'atom',
-    args: [fileName],
-    name: fileName
-  })
-  externalEditor.onMessage(text => editor.setValue(text))
-})
