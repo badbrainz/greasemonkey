@@ -59,51 +59,25 @@ greasyhost.write = async function(fileName, content, chunkSize = 65536) {
   })
 }
 
-greasyhost.connect = function() {
-  const spawnPort = chrome.runtime.connectNative('io.greasyhost.spawn')
-  const watchPort = chrome.runtime.connectNative('io.greasyhost.watch')
-  let connected = true
+greasyhost.spawn = async function(fileName, command, args = []) {
+  const port = chrome.runtime.connectNative('io.greasyhost.spawn')
 
-  async function postMessage(message) {
-    if (!connected)
-      throw new Error('greasyhost.connect: not connected')
-    await greasyhost.write(message.fileName, message.content)
-    spawnPort.postMessage({
-      file: message.fileName,
-      process: message.processName,
-      args: message.processArgs
+  await new Promise(function(resolve, reject) {
+    port.onMessage.addListener(function(message) {
+      port.disconnect()
+      if (message.error)
+        return reject(message.error)
+      resolve()
     })
-    watchPort.postMessage({
-      file: message.fileName
+
+    port.onDisconnect.addListener(function() {
+      reject(chrome.runtime.lastError)
     })
-  }
 
-  function onMessage(callback) {
-    spawnPort.onMessage.addListener(callback)
-    watchPort.onMessage.addListener(callback)
-  }
-
-  function onDisconnect(callback) {
-    spawnPort.onDisconnect.addListener(finished)
-    watchPort.onDisconnect.addListener(finished)
-    function finished() {
-      if (connected) {
-        disconnect()
-        callback()
-      }
-    }
-  }
-
-  function disconnect() {
-    spawnPort.disconnect()
-    watchPort.disconnect()
-    connected = false
-  }
-
-  return {
-    postMessage,
-    onMessage,
-    onDisconnect,
-    disconnect
-  }
+    port.postMessage({
+      file: fileName,
+      cmd: command,
+      args: args
+    })
+  })
 }

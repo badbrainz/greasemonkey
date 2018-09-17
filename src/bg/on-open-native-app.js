@@ -9,19 +9,19 @@ TODO reconnect to native app if it disconnects due to error.
 (function() {
 
 
-let nativeApp = greasyhost.connect()
+let fileWatcher = chrome.runtime.connectNative('io.greasyhost.watch')
 
-nativeApp.onMessage(function(message) {
-  if (message.error) {
-    console.warn('native app:', message.error)
-  } else if (message.file && !message.deleted) {
+fileWatcher.onMessage.addListener(function(message) {
+  if (message.error)
+    return
+  if (message.file && !message.deleted) {
     fileChanged(message.file)
       .catch(e => console.error('native app:', e))
   }
 })
 
-nativeApp.onDisconnect(function() {
-  nativeApp = null
+fileWatcher.onDisconnect.addListener(function() {
+  fileWatcher = null
 })
 
 
@@ -48,23 +48,26 @@ async function fileChanged(fileName) {
 
 async function handleExtensionMessage(scriptUuid) {
   const userScript = UserScriptRegistry.scriptByUuid(scriptUuid)
+  const fileName = userScript.uuid + '.js'
+
   const { appConfig } = await browser.storage.local.get('appConfig')
-  if (!appConfig.enabled || !appConfig.process || !appConfig.args)
+  if (!appConfig.enabled || !appConfig.cmd || !appConfig.args)
     throw new Error('external editor not configured.')
 
-  nativeApp.postMessage({
-    fileName: userScript.uuid + '.js',
-    content: userScript.content,
-    processName: appConfig.process,
-    processArgs: appConfig.args
-  })
+  if (!fileWatcher)
+    throw new Error('file watcher not connected')
+
+  await greasyhost.write(fileName, userScript.content)
+  fileWatcher.postMessage({ file: fileName })
+  await greasyhost.spawn(fileName, appConfig.cmd, appConfig.args)
 }
 
 function onOpenNativeApp(message, sender, sendResponse) {
-  return handleExtensionMessage(message.uuid)
+  sendResponse()
+  handleExtensionMessage(message.uuid)
     .catch(e => {
       console.warn('native app:', e)
-      return window.openUserScriptEditor(message.uuid)
+      window.openUserScriptEditor(message.uuid)
     })
 }
 window.onOpenNativeApp = onOpenNativeApp;
