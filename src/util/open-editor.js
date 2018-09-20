@@ -11,3 +11,10 @@ function openUserScriptEditor(scriptUuid) {
     }
   });
 }
+
+async function openEditorFromBackground(scriptUuid) {
+  await browser.runtime.sendMessage({
+    'name': 'OpenEditor',
+    'uuid': scriptUuid
+  });
+}

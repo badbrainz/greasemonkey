@@ -113,7 +113,7 @@ class Downloader {
         } else {
           resolve(savedDetails);
           if (openEditor) {
-            openUserScriptEditor(savedDetails.uuid);
+            openEditorFromBackground(savedDetails.uuid);
           }
         }
       });

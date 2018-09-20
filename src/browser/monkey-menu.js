@@ -135,8 +135,8 @@ function activate(el) {
       toggleUserScriptEnabled(gTplData.activeScript.uuid);
       return;
     case 'user-script-edit':
-      openWithNativeApp(
-        gTplData.activeScript.uuid, () => window.close());
+      openEditorFromBackground(gTplData.activeScript.uuid)
+        .finally(window.close);
       return;
     case 'user-script-uninstall':
       gTplData.pendingUninstall = 10;
@@ -160,14 +160,6 @@ function activate(el) {
   }
 
   console.info('activate unhandled:', el);
-}
-
-
-function openWithNativeApp(scriptUuid, cb) {
-  chrome.runtime.sendMessage({
-    'name': 'OpenNativeApp',
-    'uuid': scriptUuid
-  }, cb);
 }
 
 

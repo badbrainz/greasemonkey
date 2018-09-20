@@ -1,8 +1,12 @@
-'use strict'
+'use strict';
+/*
+TODO cleanup garbage files after a user script has been uninstalled.
+*/
 
-const greasyhost = {}
+(function() {
 
-greasyhost.read = async function(fileName) {
+
+async function readFile(fileName) {
   const port = chrome.runtime.connectNative('io.greasyhost.read')
 
   const chunks = await new Promise(function(resolve, reject) {
@@ -11,8 +15,9 @@ greasyhost.read = async function(fileName) {
     port.onMessage.addListener(function(message) {
       if (message.text == null) {
         port.disconnect()
-        if (message.error)
+        if (message.error) {
           return reject(message.error)
+        }
         resolve(incomingChunks)
       } else {
         incomingChunks.push(message.text)
@@ -29,20 +34,22 @@ greasyhost.read = async function(fileName) {
   return chunks.join('')
 }
 
-greasyhost.write = async function(fileName, content, chunkSize = 65536) {
+async function writeFile(fileName, content, chunkSize = 65536) {
   const port = chrome.runtime.connectNative('io.greasyhost.write')
 
   function* chop(text) {
     const blocks = Math.max(1, Math.ceil(text.length / chunkSize))
-    for (let i = 0, offset = 0; i < blocks; ++i, offset += chunkSize)
+    for (let i = 0, offset = 0; i < blocks; ++i, offset += chunkSize) {
       yield text.substr(offset, chunkSize)
+    }
   }
 
   await new Promise(function(resolve, reject) {
     port.onMessage.addListener(function(message) {
       port.disconnect()
-      if (message.error)
+      if (message.error) {
         return reject(message.error)
+      }
       resolve()
     })
 
@@ -52,21 +59,23 @@ greasyhost.write = async function(fileName, content, chunkSize = 65536) {
 
     port.postMessage(fileName)
 
-    for (const text of chop(content))
+    for (const text of chop(content)) {
       port.postMessage({ text })
+    }
 
     port.postMessage({ text: null })
   })
 }
 
-greasyhost.spawn = async function(fileName, command, args = []) {
+async function spawnProcess(fileName, command, args = []) {
   const port = chrome.runtime.connectNative('io.greasyhost.spawn')
 
   await new Promise(function(resolve, reject) {
     port.onMessage.addListener(function(message) {
       port.disconnect()
-      if (message.error)
+      if (message.error) {
         return reject(message.error)
+      }
       resolve()
     })
 
@@ -81,3 +90,11 @@ greasyhost.spawn = async function(fileName, command, args = []) {
     })
   })
 }
+
+window.GreasyHosts = {
+  'read': readFile,
+  'write': writeFile,
+  'spawn': spawnProcess
+};
+
+})();
