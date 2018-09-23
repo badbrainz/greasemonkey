@@ -6,31 +6,15 @@ TODO reconnect fileWatchPort if it disconnects unexpectedly.
 (function() {
 
 
-let fileWatchPort = chrome.runtime.connectNative('io.greasyhost.watch');
+const GREASYHOST_ID = 'greasyhost@geckoid.com'
 
-fileWatchPort.onMessage.addListener(function(message) {
-  if (message.error) {
-    console.warn('Native application non-fatal error', message.error);
-  } else if (message.file && !message.deleted) {
-    fileChanged(message.file)
-      .catch(error => {
-        console.error('Native application failed to update script:', error);
-      });
-  }
-});
-
-fileWatchPort.onDisconnect.addListener(function() {
-  fileWatchPort = null;
-});
-
-async function fileChanged(fileName) {
-  const uuidFromName = fileName.split('.')[0];
-  const userScript = UserScriptRegistry.scriptByUuid(uuidFromName);
+async function receiveFromGreasyHost(scriptUuid, scriptContent) {
+  const userScript = UserScriptRegistry.scriptByUuid(scriptUuid);
 
   const downloader = new UserScriptDownloader();
-  downloader.setKnownUuid(uuidFromName);
+  downloader.setKnownUuid(scriptUuid);
   downloader.setScriptUrl(userScript.downloadUrl);
-  downloader.setScriptContent(GreasyHosts.read(fileName));
+  downloader.setScriptContent(scriptContent);
   await downloader.start();
 
   const [userScriptDetails, downloaderDetails] = await Promise.all([
@@ -44,23 +28,31 @@ async function fileChanged(fileName) {
   });
 }
 
-async function openNativeApplication(scriptUuid) {
-  const { appConfig } = await browser.storage.local.get('appConfig');
-  if (!appConfig.enabled) {
-    return Promise.reject();
-  }
-
-  if (!fileWatchPort) {
-    throw new Error('Native application not connected');
-  }
-
+async function sendToGreasyHost(scriptUuid) {
   const userScript = UserScriptRegistry.scriptByUuid(scriptUuid);
-  const fileName = userScript.uuid + '.js';
-
-  await GreasyHosts.write(fileName, userScript.content);
-  fileWatchPort.postMessage({ file: fileName });
-  await GreasyHosts.spawn(fileName, appConfig.cmd, appConfig.args);
+  await browser.runtime.sendMessage(GREASYHOST_ID, {
+    'uuid': userScript.uuid,
+    'content': userScript.content
+  })
 }
-window.openNativeApplication = openNativeApplication;
+
+async function onMessageExternal(message, sender) {
+  if (sender.id !== GREASYHOST_ID) {
+    throw new Error(`Sender not recognized ${sender.id}`);
+  }
+  await receiveFromGreasyHost(message.uuid, message.content);
+}
+browser.runtime.onMessageExternal.addListener(onMessageExternal);
+
+
+function onOpenEditor(message, sender, sendResponse) {
+  sendResponse();
+  sendToGreasyHost(message.uuid)
+    .catch(error => {
+      console.warn('greasyhost:', error);
+      openUserScriptEditor(message.uuid);
+    });
+}
+window.onOpenEditor = onOpenEditor;
 
 })();
