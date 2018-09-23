@@ -52,9 +52,7 @@
       "/third-party/MatchPattern.js",
       "/third-party/jszip/jszip.min.js",
 
-      "/src/util/greasy-hosts.js",
       "/src/bg/on-open-editor.js",
-      "/src/bg/open-native-application.js",
 
       "/src/bg/execute.run.js",
       "/src/bg/user-script-detect.run.js",
@@ -68,7 +66,6 @@
     "clipboardWrite",
     "cookies",
     "downloads",
-    "nativeMessaging",
     "notifications",
     "storage",
     "tabs",
