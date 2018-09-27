@@ -1,12 +1,9 @@
 'use strict';
-/*
-TODO reconnect fileWatchPort if it disconnects unexpectedly.
-*/
-
 (function() {
 
 
-const GREASYHOST_ID = 'greasyhost@geckoid.com'
+const GREASYHOST_ID = 'greasyhost@geckoid.com';
+
 
 async function receiveFromGreasyHost(scriptUuid, scriptContent) {
   const userScript = UserScriptRegistry.scriptByUuid(scriptUuid);
@@ -30,17 +27,28 @@ async function receiveFromGreasyHost(scriptUuid, scriptContent) {
 
 async function sendToGreasyHost(scriptUuid) {
   const userScript = UserScriptRegistry.scriptByUuid(scriptUuid);
-  await browser.runtime.sendMessage(GREASYHOST_ID, {
-    'uuid': userScript.uuid,
-    'content': userScript.content
-  })
+  const response = await browser.runtime.sendMessage(GREASYHOST_ID, {
+    uuid: userScript.uuid,
+    content: userScript.content
+  });
+  if (response && response.error) {
+    return Promise.reject(response.error);
+  }
 }
 
 async function onMessageExternal(message, sender) {
   if (sender.id !== GREASYHOST_ID) {
     throw new Error(`Sender not recognized ${sender.id}`);
   }
-  await receiveFromGreasyHost(message.uuid, message.content);
+
+  if (message.name == 'save') {
+    await receiveFromGreasyHost(message.uuid, message.content);
+    return;
+  }
+
+  if (message.name == 'delete') {
+    return;
+  }
 }
 browser.runtime.onMessageExternal.addListener(onMessageExternal);
 
@@ -49,7 +57,7 @@ function onOpenEditor(message, sender, sendResponse) {
   sendResponse();
   sendToGreasyHost(message.uuid)
     .catch(error => {
-      console.warn('greasyhost:', error);
+      console.warn('onOpenEditor() rejected', error);
       openUserScriptEditor(message.uuid);
     });
 }
