@@ -41,14 +41,7 @@ async function onMessageExternal(message, sender) {
     throw new Error(`Sender not recognized ${sender.id}`);
   }
 
-  if (message.name == 'save') {
-    await receiveFromGreasyHost(message.uuid, message.content);
-    return;
-  }
-
-  if (message.name == 'delete') {
-    return;
-  }
+  await receiveFromGreasyHost(message.uuid, message.content);
 }
 browser.runtime.onMessageExternal.addListener(onMessageExternal);
 
